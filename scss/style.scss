@@ -6,6 +6,7 @@ body {
     font-family: "Roboto", sans-serif !important;
     background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(0, 39, 18, 1) 100%) !important;
     height: 100vh;
+    min-width: 330px;
 }
 
 #taskCol {
@@ -15,4 +16,19 @@ body {
 #editBtn:hover,
 #deleteBtn:hover {
     border: 2px solid !important;
+}
+
+#darkmodeBtn {
+    width: 40px;
+    height: 40px;
+    background-image: url("../images/sun.svg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 70%;
+}
+
+@media (max-width: 576px) {
+    .container {
+        max-width: 95%;
+    }
 }
