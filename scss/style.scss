@@ -4,15 +4,15 @@
 //BODY
 body {
     font-family: "Roboto", sans-serif !important;
-    background: linear-gradient(
-        225deg,
-        rgba(130, 205, 224, 1) 0%,
-        rgba(149, 201, 222, 1) 16.667%,
-        rgba(174, 200, 216, 1) 33.333%,
-        rgba(202, 201, 208, 1) 50%,
-        rgba(232, 206, 199, 1) 66.667%,
-        rgba(255, 213, 194, 1) 83.333%,
-        rgba(255, 221, 192, 1) 100%
-    ) !important;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(0, 39, 18, 1) 100%) !important;
     height: 100vh;
+}
+
+#taskCol {
+    height: 50px;
+}
+
+#editBtn:hover,
+#deleteBtn:hover {
+    border: 2px solid !important;
 }
