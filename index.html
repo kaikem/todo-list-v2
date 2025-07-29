@@ -14,11 +14,14 @@
                 <div id="headerRow" class="row">
                     <div class="d-flex justify-content-between">
                         <div class="headings text-light">
-                            <h1 id="greetingsMessage" class="greetings-message"></h1>
-                            <h4 id="dateHeading" class="date-heading text-capitalize"></h4>
+                            <h1 id="greetingsMessage" class="greetings-message m-0"></h1>
+                            <h4 id="dateHeading" class="date-heading text-capitalize m-0"></h4>
                         </div>
-                        <div class="darkmode-button">
-                            <button id="darkmodeBtn" class="btn btn-light"></button>
+                        <div class="header-buttons d-flex flex-column align-items-end justify-content-between">
+                            <button id="darkmodeBtn" class="btn btn-light" title="Toggle Light/Dark Modes"></button>
+                            <button id="addBtn" class="btn btn-success" title="Add a New Task">
+                                <i class="fa-solid fa-plus"></i> <span class="d-none d-sm-inline-block fw-bold">Add New Task</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -29,11 +32,13 @@
         <section id="taskList" class="task-list mt-4">
             <div class="container">
                 <div id="taskListRow" class="row">
-                    <div class="task rounded-3 text-bg-light d-flex justify-content-between align-items-center my-2 w-100" data-bs-toggle="collapse" data-bs-target="testCollapse">
+                    <div class="task rounded-3 text-bg-light d-flex justify-content-between align-items-center mt-2">
+                        <!--checkbox & title-->
                         <div class="task-title-cont d-flex align-items-center">
-                            <input type="checkbox" class="task-checkbox form-check-input task-title-input my-0 me-2" />
+                            <input type="checkbox" class="task-checkbox form-check-input my-0 me-2" />
                             <label for="taskTitle"><h3 class="task-title m-0">Task 1 Title</h3></label>
                         </div>
+                        <!--edit & delete btns-->
                         <div id="taskBtns" class="task-btns">
                             <button id="editBtn" class="btn btn-lg bg-transparente text-warning px-2 py-1" title="Edit this Task"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button id="deleteBtn" class="btn btn-lg bg-transparente text-danger px-2 py-1" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
@@ -43,6 +48,8 @@
             </div>
         </section>
 
+        <script src="./js/bootstrap.bundle.min.js"></script>
+        <script src="./js/darkmode.js"></script>
         <script src="./js/greet&date.js"></script>
         <script src="https://kit.fontawesome.com/9e35ffe1bb.js" crossorigin="anonymous"></script>
     </body>
