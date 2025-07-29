@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,20 +12,39 @@
         <header id="header" class="header mt-5">
             <div class="container">
                 <div id="headerRow" class="row">
-                    <h1 id="greetingsMessage" class="greetings-message">Bom dia/Boa tarde/Boa noite, Kaike!</h1>
-                    <h4 id="dateHeading" class="date-heading text-capitalize"></h4>
+                    <div class="d-flex justify-content-between">
+                        <div class="headings">
+                            <h1 id="greetingsMessage" class="greetings-message"></h1>
+                            <h4 id="dateHeading" class="date-heading text-capitalize"></h4>
+                        </div>
+                        <div class="darkmode-button">
+                            <button id="darkmodeBtn" class="btn btn-sm btn-light" data-bs-theme-value="light"><img src="./images/sun.svg" alt="" /></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
 
         <!--TASK LIST-->
-        <section id="taskList" class="task-list">
+        <section id="taskList" class="task-list mt-4">
             <div class="container">
-                <div id="taskListRow" class="row"></div>
+                <div id="taskListRow" class="row">
+                    <div id="taskCol" class="col-12 rounded-3 text-bg-light d-flex justify-content-between align-items-center w-100">
+                        <div id="taskTitleCont" class="task-title-cont d-flex align-items-center">
+                            <input type="checkbox" id="taskTitleInput" class="form-check-input task-title-input my-0 me-2" />
+                            <label for="taskTitle"><h3 class="m-0">Task 1 Title</h3></label>
+                        </div>
+                        <div id="taskBtns" class="task-btns">
+                            <button id="editBtn" class="btn btn-lg bg-transparente text-warning rounded-circle py-1 px-2" title="Edit this Task"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button id="deleteBtn" class="btn btn-lg bg-transparente text-danger rounded-circle py-1 px-2" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <script src="./js/script.js"></script>
+        <script src="./js/darkmodetoggle.js"></script>
+        <script src="./js/greet&date.js"></script>
         <script src="https://kit.fontawesome.com/9e35ffe1bb.js" crossorigin="anonymous"></script>
     </body>
 </html>
