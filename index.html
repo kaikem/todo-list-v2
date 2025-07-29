@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,12 +13,12 @@
             <div class="container">
                 <div id="headerRow" class="row">
                     <div class="d-flex justify-content-between">
-                        <div class="headings">
+                        <div class="headings text-light">
                             <h1 id="greetingsMessage" class="greetings-message"></h1>
                             <h4 id="dateHeading" class="date-heading text-capitalize"></h4>
                         </div>
                         <div class="darkmode-button">
-                            <button id="darkmodeBtn" class="btn btn-sm btn-light" data-bs-theme-value="light"><img src="./images/sun.svg" alt="" /></button>
+                            <button id="darkmodeBtn" class="btn btn-light"></button>
                         </div>
                     </div>
                 </div>
@@ -29,21 +29,20 @@
         <section id="taskList" class="task-list mt-4">
             <div class="container">
                 <div id="taskListRow" class="row">
-                    <div id="taskCol" class="col-12 rounded-3 text-bg-light d-flex justify-content-between align-items-center w-100">
-                        <div id="taskTitleCont" class="task-title-cont d-flex align-items-center">
-                            <input type="checkbox" id="taskTitleInput" class="form-check-input task-title-input my-0 me-2" />
-                            <label for="taskTitle"><h3 class="m-0">Task 1 Title</h3></label>
+                    <div class="task rounded-3 text-bg-light d-flex justify-content-between align-items-center my-2 w-100" data-bs-toggle="collapse" data-bs-target="testCollapse">
+                        <div class="task-title-cont d-flex align-items-center">
+                            <input type="checkbox" class="task-checkbox form-check-input task-title-input my-0 me-2" />
+                            <label for="taskTitle"><h3 class="task-title m-0">Task 1 Title</h3></label>
                         </div>
                         <div id="taskBtns" class="task-btns">
-                            <button id="editBtn" class="btn btn-lg bg-transparente text-warning rounded-circle py-1 px-2" title="Edit this Task"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button id="deleteBtn" class="btn btn-lg bg-transparente text-danger rounded-circle py-1 px-2" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
+                            <button id="editBtn" class="btn btn-lg bg-transparente text-warning px-2 py-1" title="Edit this Task"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button id="deleteBtn" class="btn btn-lg bg-transparente text-danger px-2 py-1" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <script src="./js/darkmodetoggle.js"></script>
         <script src="./js/greet&date.js"></script>
         <script src="https://kit.fontawesome.com/9e35ffe1bb.js" crossorigin="anonymous"></script>
     </body>
