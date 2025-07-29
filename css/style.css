@@ -1,0 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+body {
+  font-family: "Roboto", sans-serif !important;
+  background: linear-gradient(225deg, rgb(130, 205, 224) 0%, rgb(149, 201, 222) 16.667%, rgb(174, 200, 216) 33.333%, rgb(202, 201, 208) 50%, rgb(232, 206, 199) 66.667%, rgb(255, 213, 194) 83.333%, rgb(255, 221, 192) 100%) !important;
+  height: 100vh;
+}

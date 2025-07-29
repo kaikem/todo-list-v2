@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "bootstrap": "^5.3.7",
+        "sass": "^1.89.2"
+    },
+    "scripts": {
+        "sass:build": "sass --no-source-map scss:css",
+        "sass:watch": "sass --no-source-map --watch scss:css"
+    }
+}

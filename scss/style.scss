@@ -1,0 +1,18 @@
+//FONT IMPORT
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+//BODY
+body {
+    font-family: "Roboto", sans-serif !important;
+    background: linear-gradient(
+        225deg,
+        rgba(130, 205, 224, 1) 0%,
+        rgba(149, 201, 222, 1) 16.667%,
+        rgba(174, 200, 216, 1) 33.333%,
+        rgba(202, 201, 208, 1) 50%,
+        rgba(232, 206, 199, 1) 66.667%,
+        rgba(255, 213, 194, 1) 83.333%,
+        rgba(255, 221, 192, 1) 100%
+    ) !important;
+    height: 100vh;
+}
