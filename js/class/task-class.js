@@ -29,3 +29,5 @@ class Task {
         this.priority = newPriority;
     }
 }
+
+export { Task };
