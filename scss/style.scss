@@ -50,7 +50,9 @@ body {
     .container {
         max-width: 95%;
     }
+}
 
+@media (max-width: 457px) {
     .task-btns-cont {
         flex-direction: column;
     }
