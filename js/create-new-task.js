@@ -1,3 +1,4 @@
+//--------------------------------------------------------------------
 //IMPORTS
 //"task" class
 import { Task } from "./class/task-class.js";
@@ -5,20 +6,24 @@ import { Task } from "./class/task-class.js";
 import { createPopovers } from "./popovers.js";
 //LStasks variable
 import { LStasks } from "./ls-verif.js";
-//checkbox listener function
-import { checkboxesListeners } from "./ls-verif.js";
 
+//--------------------------------------------------------------------
 //DOM ELEMENTS
+const addBtn = document.getElementById("addBtn");
+const addNewTaskForm = document.getElementById("addNewTaskForm");
 const titleInput = document.getElementById("titleInput");
 const obsInput = document.getElementById("obsInput");
 const priorityInput = document.getElementById("priorityInput");
-const modalCreateBtn = document.getElementById("modalCreateBtn");
+const modalCancelBtn = document.getElementById("modalCancelBtn");
 const incompTasksRow = document.getElementById("incompTasksRow");
 const compTasksRow = document.getElementById("compTasksRow");
 
+//--------------------------------------------------------------------
 //EVENT LISTENERS
+//"Add New Task" Btn
+addBtn.addEventListener("click", () => titleInput.focus);
 //for modal "Create" btn
-modalCreateBtn.addEventListener("click", () => {
+addNewTaskForm.addEventListener("submit", () => {
     const newTaskTitle = titleInput.value;
     const newTaskObs = obsInput.value;
     const newTaskPriority = priorityInput.value;
@@ -26,22 +31,30 @@ modalCreateBtn.addEventListener("click", () => {
     LStasks.push(newTask);
     localStorage.setItem("tasks", JSON.stringify(LStasks));
 
+    clearForm();
+
+    createTask(newTask);
+});
+
+//for modal "Cancel" btn
+modalCancelBtn.addEventListener("click", () => clearForm());
+
+//--------------------------------------------------------------------
+//FUNCTIONS
+//for clearing the form
+function clearForm() {
     titleInput.value = "";
     obsInput.value = "";
     priorityInput.value = "0";
+}
 
-    createTask(newTask);
-    return newTask;
-});
-
-//FUNCTIONS
 //for creating tasks and adding to the incompTasksRow and LS (HTML only)
 function createTask(taskObj) {
     const taskEl = document.createElement("div");
     if (taskObj.status === "incomplete") {
-        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center mt-2 ${taskObj.priority}`;
+        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 ${taskObj.priority}`;
     } else {
-        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center mt-2 complete`;
+        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 complete`;
     }
     taskEl.innerHTML = `
                         <!--checkbox & title-->
@@ -65,9 +78,20 @@ function createTask(taskObj) {
                         </div>
     `;
 
+    const checkbox = taskEl.querySelector("input[type='checkbox']");
+
+    checkbox.addEventListener("change", () => {
+        if (taskEl.classList.contains("complete")) {
+            taskEl.classList.remove("complete");
+        } else {
+            taskEl.classList.add("complete");
+        }
+    });
+
     incompTasksRow.appendChild(taskEl);
     createPopovers();
-    checkboxesListeners();
 }
 
+//--------------------------------------------------------------------
+//EXPORTS
 export { createTask };
