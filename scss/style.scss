@@ -34,10 +34,12 @@ body {
     background-repeat: no-repeat;
     background-size: 70%;
     border-radius: 50%;
+    transition: 0.4s;
 }
 
 #darkmodeBtn:active,
-#addBtn:active {
+#addBtn:active,
+.modal-btn:active {
     transform: scale(0.98);
 }
 
