@@ -7,21 +7,19 @@ body {
 }
 
 .task {
-  height: 50px;
+  min-height: 50px;
 }
 
 #taskListRow {
   padding: inherit !important;
 }
 
-#editBtn,
-#deleteBtn {
-  border-radius: 50%;
-  transition: border 0.2s ease-in-out;
+.task-btns-cont {
+  background-color: rgba(225, 225, 225, 0.3450980392);
 }
 
-#editBtn:hover,
-#deleteBtn:hover {
+.task-btn:hover {
+  transition: border 0.3s ease-in-out;
   border: 2px solid !important;
 }
 
@@ -48,5 +46,8 @@ body {
 @media (max-width: 576px) {
   .container {
     max-width: 95%;
+  }
+  .task-btns-cont {
+    flex-direction: column;
   }
 }
