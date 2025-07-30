@@ -39,10 +39,41 @@
                             <input type="checkbox" class="task-checkbox form-check-input my-0 me-2" />
                             <label for="taskTitle"><h3 class="task-title m-0">Task 1 Title</h3></label>
                         </div>
-                        <!--edit & delete btns-->
-                        <div id="taskBtns" class="task-btns">
-                            <button id="editBtn" class="btn btn-lg bg-transparente text-warning px-2 py-1" title="Edit this Task"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button id="deleteBtn" class="btn btn-lg bg-transparente text-danger px-2 py-1" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
+                        <!--info, edit & delete btns-->
+                        <div id="taskBtnsCont" class="task-btns-cont d-flex rounded-3 ms-3">
+                            <button
+                                id="infoBtn"
+                                class="task-btn popover-btn btn btn-lg bg-transparente text-info px-2 py-1"
+                                data-bs-toggle="popover"
+                                data-bs-title="Task 1 Title Observations"
+                                data-bs-content="Task 1 Description dolor sit amet consectetur adipisicing elit. Rerum, alias."
+                            >
+                                <i class="fa-solid fa-circle-info"></i>
+                            </button>
+                            <button id="editBtn" class="task-btn btn btn-lg bg-transparente text-warning px-2 py-1" title="Edit this Task"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button id="deleteBtn" class="task-btn btn btn-lg bg-transparente text-danger px-2 py-1" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="task rounded-3 text-bg-light d-flex justify-content-between align-items-center mt-2">
+                        <!--checkbox & title-->
+                        <div class="task-title-cont d-flex align-items-center">
+                            <input type="checkbox" class="task-checkbox form-check-input my-0 me-2" />
+                            <label for="taskTitle"><h3 class="task-title m-0">Task 2 Title dolor sit amet consectetur, adipisicing elit. Adipisci, pariatur!</h3></label>
+                        </div>
+                        <!--info, edit & delete btns-->
+                        <div id="taskBtnsCont" class="task-btns-cont d-flex rounded-3 ms-3">
+                            <button
+                                id="infoBtn"
+                                class="task-btn popover-btn btn btn-lg bg-transparente text-info px-2 py-1"
+                                data-bs-toggle="popover"
+                                data-bs-title="Task 2 Title Observations"
+                                data-bs-content="Task 2 Description Lorem ipsum dolor sit amet."
+                            >
+                                <i class="fa-solid fa-circle-info"></i>
+                            </button>
+                            <button id="editBtn" class="task-btn btn btn-lg bg-transparente text-warning px-2 py-1" title="Edit this Task"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button id="deleteBtn" class="task-btn btn btn-lg bg-transparente text-danger px-2 py-1" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                 </div>
@@ -50,6 +81,7 @@
         </section>
 
         <script src="./js/bootstrap.bundle.min.js"></script>
+        <script src="./js/popovers.js"></script>
         <script src="./js/darkmode.js"></script>
         <script src="./js/greet&date.js"></script>
         <script src="https://kit.fontawesome.com/9e35ffe1bb.js" crossorigin="anonymous"></script>
