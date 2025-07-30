@@ -1,15 +1,20 @@
 //IMPORTS
 //"task" class
 import { Task } from "./class/task-class.js";
+//createPopovers function
 import { createPopovers } from "./popovers.js";
+//LStasks variable
+import { LStasks } from "./ls-verif.js";
+//checkbox listener function
+import { checkboxesListeners } from "./ls-verif.js";
 
 //DOM ELEMENTS
 const titleInput = document.getElementById("titleInput");
 const obsInput = document.getElementById("obsInput");
 const priorityInput = document.getElementById("priorityInput");
 const modalCreateBtn = document.getElementById("modalCreateBtn");
-const taskListRow = document.getElementById("taskListRow");
-const tasksObj = [];
+const incompTasksRow = document.getElementById("incompTasksRow");
+const compTasksRow = document.getElementById("compTasksRow");
 
 //EVENT LISTENERS
 //for modal "Create" btn
@@ -18,8 +23,8 @@ modalCreateBtn.addEventListener("click", () => {
     const newTaskObs = obsInput.value;
     const newTaskPriority = priorityInput.value;
     const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
-    tasksObj.push(newTask);
-    localStorage.setItem("tasks", JSON.stringify(tasksObj));
+    LStasks.push(newTask);
+    localStorage.setItem("tasks", JSON.stringify(LStasks));
 
     titleInput.value = "";
     obsInput.value = "";
@@ -30,11 +35,11 @@ modalCreateBtn.addEventListener("click", () => {
 });
 
 //FUNCTIONS
-//for creating tasks and adding to the taskListRow and LS (HTML only)
-function createTask(task) {
+//for creating tasks and adding to the incompTasksRow and LS (HTML only)
+function createTask(taskObj) {
     const taskEl = document.createElement("div");
-    if (task.status === "incomplete") {
-        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center mt-2 ${task.priority}`;
+    if (taskObj.status === "incomplete") {
+        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center mt-2 ${taskObj.priority}`;
     } else {
         taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center mt-2 complete`;
     }
@@ -42,7 +47,7 @@ function createTask(task) {
                         <!--checkbox & title-->
                         <div class="task-title-cont d-flex align-items-center">
                             <input type="checkbox" class="task-checkbox form-check-input my-0 me-2" />
-                            <h3 class="task-title m-0">${task.title}</h3>
+                            <h3 class="task-title m-0">${taskObj.title}</h3>
                         </div>
                         <!--info, edit & delete btns-->
                         <div id="taskBtnsCont" class="task-btns-cont d-flex rounded-3 ms-3">
@@ -50,8 +55,8 @@ function createTask(task) {
                                 id="infoBtn"
                                 class="task-btn popover-btn btn btn-lg bg-transparent text-info px-2 py-1"
                                 data-bs-toggle="popover"
-                                data-bs-title="${task.title} Observations"
-                                data-bs-content="${task.obs}"
+                                data-bs-title="Observations"
+                                data-bs-content="${taskObj.obs}"
                             >
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
@@ -59,8 +64,10 @@ function createTask(task) {
                             <button id="deleteBtn" class="task-btn btn btn-lg bg-transparent text-danger px-2 py-1" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
                         </div>
     `;
-    taskListRow.appendChild(taskEl);
+
+    incompTasksRow.appendChild(taskEl);
     createPopovers();
+    checkboxesListeners();
 }
 
 export { createTask };
