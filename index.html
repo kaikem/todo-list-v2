@@ -19,7 +19,9 @@
                         </div>
                         <div class="header-buttons d-flex flex-column align-items-end justify-content-between">
                             <button id="darkmodeBtn" class="btn btn-light" title="Toggle Light/Dark Modes"></button>
-                            <button id="addBtn" class="btn btn-success d-none d-sm-inline-block py-1" title="Add a New Task"><i class="fa-solid fa-plus"></i> Add New Task</button>
+                            <button id="addBtn" class="btn btn-success d-none d-sm-inline-block py-1" title="Add a New Task" data-bs-toggle="modal" data-bs-target="#newTaskModal">
+                                <i class="fa-solid fa-plus"></i> Add New Task
+                            </button>
                             <button id="addBtnSm" class="btn btn-success d-inline-block d-sm-none d-flex justify-content-center align-items-center" title="Add a New Task">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
@@ -79,6 +81,43 @@
                 </div>
             </div>
         </section>
+
+        <!--NEW TASK MODAL-->
+        <div id="newTaskModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-bg-success">
+                        <h3 class="modal-title">Add New Task</h3>
+                        <button class="btn-close" data-bs-dismiss="modal" data-bs-theme="dark"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!--task title-->
+                        <div class="new-task-input form-floating">
+                            <input type="text" id="titleInput" class="form-control" placeholder="Task Title" required />
+                            <label for="titleInput">Task Title</label>
+                        </div>
+                        <!--task observations-->
+                        <div class="new-task-input form-floating mt-3">
+                            <textarea id="descInput" class="form-control" style="height: 100px" placeholder="Task Observations"></textarea>
+                            <label for="descInput">Task Observations</label>
+                        </div>
+                        <!--task priority-->
+                        <div class="new-task-input">
+                            <select id="priorityInput" class="form-select mt-3">
+                                <option>*Select Task Priority*</option>
+                                <option value="1">Low</option>
+                                <option value="2">Normal</option>
+                                <option value="3">High</option>
+                            </select>
+                        </div>
+                        <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
+                            <button class="modal-btn btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                            <button class="modal-btn btn btn-success">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="./js/bootstrap.bundle.min.js"></script>
         <script src="./js/popovers.js"></script>
