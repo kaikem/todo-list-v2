@@ -48,28 +48,30 @@
                     </div>
                     <div class="modal-body">
                         <!--task title-->
-                        <div class="new-task-input form-floating">
-                            <input type="text" id="titleInput" class="form-control" placeholder="Task Title" required />
-                            <label for="titleInput">Task Title</label>
-                        </div>
-                        <!--task observations-->
-                        <div class="new-task-input form-floating mt-3">
-                            <textarea id="obsInput" class="form-control" style="height: 100px" placeholder="Task Observations"></textarea>
-                            <label for="obsInput">Task Observations</label>
-                        </div>
-                        <!--task priority-->
-                        <div class="new-task-input">
-                            <select id="priorityInput" class="form-select mt-3">
-                                <option value="0">*Select Task Priority*</option>
-                                <option value="low">Low</option>
-                                <option value="normal">Normal</option>
-                                <option value="high">High</option>
-                            </select>
-                        </div>
-                        <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
-                            <button class="modal-btn btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                            <button id="modalCreateBtn" class="modal-btn btn btn-success" data-bs-dismiss="modal">Create</button>
-                        </div>
+                        <form>
+                            <div class="new-task-input form-floating">
+                                <input type="text" id="titleInput" class="form-control" placeholder="Task Title" required />
+                                <label for="titleInput">Task Title</label>
+                            </div>
+                            <!--task observations-->
+                            <div class="new-task-input form-floating mt-3">
+                                <textarea id="obsInput" class="form-control" style="height: 100px" placeholder="Task Observations"></textarea>
+                                <label for="obsInput">Task Observations</label>
+                            </div>
+                            <!--task priority-->
+                            <div class="new-task-input">
+                                <select id="priorityInput" class="form-select mt-3" required>
+                                    <option value="0">*Select Task Priority*</option>
+                                    <option value="low">Low</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
+                                <button class="modal-btn btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-success">Create</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
