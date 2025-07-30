@@ -1,8 +1,9 @@
 class Task {
-    constructor(title, obs, priority) {
+    constructor(title, obs, priority, status) {
         this.title = title;
         this.obs = obs;
         this.priority = priority;
+        this.status = status;
     }
 
     //title
@@ -27,6 +28,14 @@ class Task {
     }
     setPriority(newPriority) {
         this.priority = newPriority;
+    }
+
+    //status
+    getStatus() {
+        return this.status;
+    }
+    setStatus(newStatus) {
+        this.status = newStatus;
     }
 }
 
