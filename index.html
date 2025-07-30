@@ -98,21 +98,21 @@
                         </div>
                         <!--task observations-->
                         <div class="new-task-input form-floating mt-3">
-                            <textarea id="descInput" class="form-control" style="height: 100px" placeholder="Task Observations"></textarea>
-                            <label for="descInput">Task Observations</label>
+                            <textarea id="obsInput" class="form-control" style="height: 100px" placeholder="Task Observations"></textarea>
+                            <label for="obsInput">Task Observations</label>
                         </div>
                         <!--task priority-->
                         <div class="new-task-input">
                             <select id="priorityInput" class="form-select mt-3">
-                                <option>*Select Task Priority*</option>
-                                <option value="1">Low</option>
-                                <option value="2">Normal</option>
-                                <option value="3">High</option>
+                                <option value="0">*Select Task Priority*</option>
+                                <option value="low">Low</option>
+                                <option value="normal">Normal</option>
+                                <option value="high">High</option>
                             </select>
                         </div>
                         <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
                             <button class="modal-btn btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                            <button class="modal-btn btn btn-success">Create</button>
+                            <button id="modalCreateBtn" class="modal-btn btn btn-success" data-bs-dismiss="modal">Create</button>
                         </div>
                     </div>
                 </div>
@@ -123,6 +123,7 @@
         <script src="./js/popovers.js"></script>
         <script src="./js/darkmode.js"></script>
         <script src="./js/greet&date.js"></script>
+        <script src="./js/create-new-task.js" type="module"></script>
         <script src="https://kit.fontawesome.com/9e35ffe1bb.js" crossorigin="anonymous"></script>
     </body>
 </html>
