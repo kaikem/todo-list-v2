@@ -4,10 +4,12 @@
 import { Task } from "./class/task-class.js";
 //createPopovers function
 import { createPopovers } from "./popovers.js";
-//LSIncompTasks variable
+//LSIncompTasks objects array
 import { LSIncompTasks } from "./ls-verif.js";
-//LSIncompTasks variable
+//LSIncompTasks objects array
 import { LSCompTasks } from "./ls-verif.js";
+//
+import { updateLS } from "./ls-verif.js";
 
 //--------------------------------------------------------------------
 //DOM ELEMENTS
@@ -39,10 +41,12 @@ modalCancelBtn.addEventListener("click", () => clearForm());
 
 //--------------------------------------------------------------------
 //FUNCTIONS
-//Setting tasks in LS
-function updateLS() {
+//for updating incomplete/complete tasks in LS
+function updateStatusLS() {
     const incompTasksEl = document.querySelectorAll(".task.incomplete");
     const compTasksEl = document.querySelectorAll(".task.complete");
+    const newLSIncompTasks = [];
+    const newLSCompTasks = [];
 
     if (incompTasksEl) {
         incompTasksEl.forEach((incompTaskEl) => {
@@ -63,14 +67,14 @@ function updateLS() {
             }
 
             //object
-            const incompTaskObj = new Task(incompTaskElTitle, incompTaskElObs, incompTaskElPriority, "imcomplete");
+            const incompTaskObj = new Task(incompTaskElTitle, incompTaskElObs, incompTaskElPriority, "incomplete");
 
-            LSIncompTasks.push(incompTaskObj);
-            createTask(incompTaskObj);
+            newLSIncompTasks.push(incompTaskObj);
         });
+    }
+    localStorage.setItem("incomp-tasks", JSON.stringify(newLSIncompTasks));
 
-        localStorage.setItem("incomp-tasks", JSON.stringify(LSIncompTasks));
-    } else if (compTasksEl) {
+    if (compTasksEl) {
         compTasksEl.forEach((compTaskEl) => {
             //title
             const compTaskElTitle = compTaskEl.querySelector(".task-title").innerText;
@@ -79,7 +83,7 @@ function updateLS() {
             const compTaskElObs = compTaskEl.querySelector(".popover-btn").getAttribute("data-bs-content");
 
             //priority
-            const compTaskElPriority = "normal";
+            let compTaskElPriority = "normal";
             if (compTaskEl.classList.contains("low")) {
                 compTaskElPriority = "low";
             } else if (compTaskEl.classList.contains("normal")) {
@@ -91,13 +95,13 @@ function updateLS() {
             //object
             const compTaskObj = new Task(compTaskElTitle, compTaskElObs, compTaskElPriority, "complete");
 
-            LSCompTasks.push(compTaskObj);
-            createTask(compTaskObj);
+            newLSCompTasks.push(compTaskObj);
         });
 
-        localStorage.setItem("comp-tasks", JSON.stringify(LSCompTasks));
+        localStorage.setItem("comp-tasks", JSON.stringify(newLSCompTasks));
     }
 }
+
 //for clearing the form
 function clearForm() {
     titleInput.value = "";
@@ -111,10 +115,11 @@ function moveTask() {
     tasks.forEach((task) => {
         if (task.classList.contains("complete")) {
             compTasksRow.appendChild(task);
-        } else {
+        } else if (task.classList.contains("incomplete")) {
             incompTasksRow.appendChild(task);
         }
     });
+    updateStatusLS();
 }
 
 //for creating tasks and adding to the HTML & LS (HTML only)
@@ -123,13 +128,13 @@ function createTask(taskObj) {
     const taskEl = document.createElement("div");
     if (taskObj.status === "incomplete") {
         taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 incomplete ${taskObj.priority}`;
-    } else {
+    } else if (taskObj.status === "complete") {
         taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 complete ${taskObj.priority}`;
     }
     taskEl.innerHTML = `
                         <!--checkbox & title-->
                         <div class="task-title-cont d-flex align-items-center">
-                            <input type="checkbox" class="task-checkbox form-check-input my-0 me-2" />
+                            <input type="checkbox" class="task-checkbox form-check-input my-0 me-2" ${taskObj.status === "complete" ? "checked" : ""}/>
                             <h3 class="task-title m-0">${taskObj.title}</h3>
                         </div>
                         <!--info, edit & delete btns-->
@@ -173,6 +178,7 @@ function createTask(taskObj) {
 
     //insert into "Incomplete Tasks" row
     incompTasksRow.appendChild(taskEl);
+    moveTask();
 
     //popover creation
     createPopovers();
