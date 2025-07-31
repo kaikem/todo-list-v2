@@ -10,28 +10,33 @@ const incompTasksRow = document.getElementById("incompTasksRow");
 //--------------------------------------------------------------------
 //EXISTING DATA
 //data in the LS
+
+//FUNCTION
+//for creating tasks on page load with LS Data
 let LSIncompTasks = JSON.parse(localStorage.getItem("incomp-tasks"));
-if (LSIncompTasks === null) {
-    LSIncompTasks = [];
-}
-
 let LSCompTasks = JSON.parse(localStorage.getItem("comp-tasks"));
-if (LSCompTasks === null) {
-    LSCompTasks = [];
-}
 
-//create tasks with LS data
-if (LSIncompTasks.length > 0) {
-    LSIncompTasks.forEach((task) => createTask(task));
-} else {
-    incompTasksRow.innerHTML = "<div class='mt-3 p-0'><h4 class='text-danger display-6'>No To-Do Tasks Registered<h4></div>";
-}
+updateLS();
 
-if (LSCompTasks.length > 0) {
-    LSCompTasks.forEach((task) => createTask(task));
+function updateLS() {
+    if (LSIncompTasks) {
+        localStorage.setItem("incomp-tasks", JSON.stringify(LSIncompTasks));
+        LSIncompTasks.forEach((LSIncompTaskEl) => createTask(LSIncompTaskEl));
+    } else if (LSIncompTasks === null) {
+        LSIncompTasks = [];
+        incompTasksRow.innerHTML = "<div class='mt-3 p-0'><h4 class='text-danger display-6'>No To-Do Tasks Registered<h4></div>";
+    }
+
+    if (LSCompTasks) {
+        localStorage.setItem("comp-tasks", JSON.stringify(LSCompTasks));
+        LSCompTasks.forEach((LSCompTaskEl) => createTask(LSCompTaskEl));
+    } else if (LSCompTasks === null) {
+        LSCompTasks = [];
+    }
 }
 
 //--------------------------------------------------------------------
 //EXPORTS
 export { LSIncompTasks };
 export { LSCompTasks };
+export { updateLS };
