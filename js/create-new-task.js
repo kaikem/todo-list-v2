@@ -9,6 +9,8 @@ import { LStasks } from "./ls-verif.js";
 
 //--------------------------------------------------------------------
 //DOM ELEMENTS
+const incompTasksRow = document.getElementById("incompTasksRow");
+const compTasksRow = document.getElementById("compTasksRow");
 const addBtn = document.getElementById("addBtn");
 const addBtnSm = document.getElementById("addBtnSm");
 const addNewTaskForm = document.getElementById("addNewTaskForm");
@@ -16,8 +18,6 @@ const titleInput = document.getElementById("titleInput");
 const obsInput = document.getElementById("obsInput");
 const priorityInput = document.getElementById("priorityInput");
 const modalCancelBtn = document.getElementById("modalCancelBtn");
-const incompTasksRow = document.getElementById("incompTasksRow");
-const compTasksRow = document.getElementById("compTasksRow");
 
 //--------------------------------------------------------------------
 //EVENT LISTENERS
@@ -84,23 +84,33 @@ function createTask(taskObj) {
                             >
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
-                            <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-warning px-2 py-1" title="Edit this Task"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-warning px-2 py-1" title="Edit this Task" data-bs-toggle="modal" data-bs-target="#editTaskModal"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button id="deleteBtn" class="task-btn btn btn-lg bg-transparent text-danger px-2 py-1" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
                         </div>
     `;
 
+    //TaskEl inner elements
     const checkbox = taskEl.querySelector("input[type='checkbox']");
+    const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
+    const editBtn = taskEl.querySelector("#editBtn");
 
+    //checkbox EL
     checkbox.addEventListener("change", () => {
         if (taskEl.classList.contains("complete")) {
             taskEl.classList.remove("complete");
+            editBtn.classList.remove("d-none");
         } else {
             taskEl.classList.add("complete");
+            taskBtnsCont.classList.add("complete");
+            editBtn.classList.add("d-none");
         }
         moveTask();
     });
 
+    //insert into "Incomplete Tasks" row
     incompTasksRow.appendChild(taskEl);
+
+    //elements function
     createPopovers();
 }
 
