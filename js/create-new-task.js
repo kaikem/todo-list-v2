@@ -10,6 +10,7 @@ import { LStasks } from "./ls-verif.js";
 //--------------------------------------------------------------------
 //DOM ELEMENTS
 const addBtn = document.getElementById("addBtn");
+const addBtnSm = document.getElementById("addBtnSm");
 const addNewTaskForm = document.getElementById("addNewTaskForm");
 const titleInput = document.getElementById("titleInput");
 const obsInput = document.getElementById("obsInput");
@@ -20,8 +21,6 @@ const compTasksRow = document.getElementById("compTasksRow");
 
 //--------------------------------------------------------------------
 //EVENT LISTENERS
-//"Add New Task" Btn
-addBtn.addEventListener("click", () => titleInput.focus);
 //for modal "Create" btn
 addNewTaskForm.addEventListener("submit", () => {
     const newTaskTitle = titleInput.value;
@@ -48,7 +47,19 @@ function clearForm() {
     priorityInput.value = "0";
 }
 
-//for creating tasks and adding to the incompTasksRow and LS (HTML only)
+//for moving tasks
+function moveTask() {
+    const tasks = document.querySelectorAll(".task");
+    tasks.forEach((task) => {
+        if (task.classList.contains("complete")) {
+            compTasksRow.appendChild(task);
+        } else {
+            incompTasksRow.appendChild(task);
+        }
+    });
+}
+
+//for creating tasks and adding to the HTML & LS (HTML only)
 function createTask(taskObj) {
     const taskEl = document.createElement("div");
     if (taskObj.status === "incomplete") {
@@ -86,6 +97,7 @@ function createTask(taskObj) {
         } else {
             taskEl.classList.add("complete");
         }
+        moveTask();
     });
 
     incompTasksRow.appendChild(taskEl);
