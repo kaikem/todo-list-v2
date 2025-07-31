@@ -27,8 +27,22 @@ body.bg-dark {
   color: green;
 }
 
+.task.incomplete.low {
+  background-color: rgb(168, 200, 255);
+}
+
+.task.incomplete.high {
+  background-color: rgb(255, 167, 167);
+}
+
 .task .task-btns-cont {
   background-color: #fff;
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.75);
+}
+
+.task .task-btns-cont.complete {
+  background-color: #a9fba8;
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.75);
 }
 
 .task-btns-cont .task-btn:hover {
