@@ -4,15 +4,15 @@
 import { Task } from "./class/task-class.js";
 //createPopovers function
 import { createPopovers } from "./popovers.js";
-//LStasks variable
-import { LStasks } from "./ls-verif.js";
+//LSIncompTasks variable
+import { LSIncompTasks } from "./ls-verif.js";
+//LSIncompTasks variable
+import { LSCompTasks } from "./ls-verif.js";
 
 //--------------------------------------------------------------------
 //DOM ELEMENTS
 const incompTasksRow = document.getElementById("incompTasksRow");
 const compTasksRow = document.getElementById("compTasksRow");
-const addBtn = document.getElementById("addBtn");
-const addBtnSm = document.getElementById("addBtnSm");
 const addNewTaskForm = document.getElementById("addNewTaskForm");
 const titleInput = document.getElementById("titleInput");
 const obsInput = document.getElementById("obsInput");
@@ -27,12 +27,13 @@ addNewTaskForm.addEventListener("submit", () => {
     const newTaskObs = obsInput.value;
     const newTaskPriority = priorityInput.value;
     const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
-    LStasks.push(newTask);
-    localStorage.setItem("tasks", JSON.stringify(LStasks));
 
     clearForm();
 
     createTask(newTask);
+
+    LSIncompTasks.push(newTask);
+    localStorage.setItem("incomp-tasks", JSON.stringify(LSIncompTasks));
 });
 
 //for modal "Cancel" btn
@@ -40,6 +41,14 @@ modalCancelBtn.addEventListener("click", () => clearForm());
 
 //--------------------------------------------------------------------
 //FUNCTIONS
+//Setting tasks in LS
+function addTaskToLS(key) {
+    if (key === "incomp") {
+        localStorage.setItem("incomp-tasks", JSON.stringify(LSIncompTasks));
+    } else if (key === "comp") {
+        localStorage.setItem("comp-tasks", JSON.stringify(LSCompTasks));
+    }
+}
 //for clearing the form
 function clearForm() {
     titleInput.value = "";
@@ -61,11 +70,12 @@ function moveTask() {
 
 //for creating tasks and adding to the HTML & LS (HTML only)
 function createTask(taskObj) {
+    //html element
     const taskEl = document.createElement("div");
     if (taskObj.status === "incomplete") {
-        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 ${taskObj.priority}`;
+        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 incomplete ${taskObj.priority}`;
     } else {
-        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 complete`;
+        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 complete ${taskObj.priority}`;
     }
     taskEl.innerHTML = `
                         <!--checkbox & title-->
@@ -89,17 +99,22 @@ function createTask(taskObj) {
                         </div>
     `;
 
-    //TaskEl inner elements
+    //inner elements
     const checkbox = taskEl.querySelector("input[type='checkbox']");
     const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
     const editBtn = taskEl.querySelector("#editBtn");
 
-    //checkbox EL
+    //checkbox eventListener
     checkbox.addEventListener("change", () => {
         if (taskEl.classList.contains("complete")) {
+            taskObj.status = "incomplete";
+            taskEl.classList.add("incomplete");
             taskEl.classList.remove("complete");
+            taskBtnsCont.classList.remove("complete");
             editBtn.classList.remove("d-none");
         } else {
+            taskObj.status = "complete";
+            taskEl.classList.remove("incomplete");
             taskEl.classList.add("complete");
             taskBtnsCont.classList.add("complete");
             editBtn.classList.add("d-none");
@@ -110,7 +125,7 @@ function createTask(taskObj) {
     //insert into "Incomplete Tasks" row
     incompTasksRow.appendChild(taskEl);
 
-    //elements function
+    //popover creation
     createPopovers();
 }
 

@@ -9,19 +9,29 @@ const incompTasksRow = document.getElementById("incompTasksRow");
 
 //--------------------------------------------------------------------
 //EXISTING DATA
-//tasks in the LS
-let LStasks = JSON.parse(localStorage.getItem("tasks"));
-if (LStasks === null) {
-    LStasks = [];
+//data in the LS
+let LSIncompTasks = JSON.parse(localStorage.getItem("incomp-tasks"));
+if (LSIncompTasks === null) {
+    LSIncompTasks = [];
+}
+
+let LSCompTasks = JSON.parse(localStorage.getItem("comp-tasks"));
+if (LSCompTasks === null) {
+    LSCompTasks = [];
 }
 
 //create tasks with LS data
-if (LStasks.length > 0) {
-    LStasks.forEach((task) => createTask(task));
+if (LSIncompTasks.length > 0) {
+    LSIncompTasks.forEach((task) => createTask(task));
 } else {
     incompTasksRow.innerHTML = "<div class='mt-3 p-0'><h4 class='text-danger display-6'>No To-Do Tasks Registered<h4></div>";
 }
 
+if (LSCompTasks.length > 0) {
+    LSCompTasks.forEach((task) => createTask(task));
+}
+
 //--------------------------------------------------------------------
 //EXPORTS
-export { LStasks };
+export { LSIncompTasks };
+export { LSCompTasks };
