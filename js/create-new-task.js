@@ -22,18 +22,16 @@ const modalCancelBtn = document.getElementById("modalCancelBtn");
 //--------------------------------------------------------------------
 //EVENT LISTENERS
 //for modal "Create" btn
-addNewTaskForm.addEventListener("submit", () => {
+addNewTaskForm.addEventListener("submit", (e) => {
     const newTaskTitle = titleInput.value;
     const newTaskObs = obsInput.value;
     const newTaskPriority = priorityInput.value;
     const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
+    LSIncompTasks.push(newTask);
 
     clearForm();
 
-    createTask(newTask);
-
-    LSIncompTasks.push(newTask);
-    localStorage.setItem("incomp-tasks", JSON.stringify(LSIncompTasks));
+    updateLS();
 });
 
 //for modal "Cancel" btn
@@ -42,10 +40,61 @@ modalCancelBtn.addEventListener("click", () => clearForm());
 //--------------------------------------------------------------------
 //FUNCTIONS
 //Setting tasks in LS
-function addTaskToLS(key) {
-    if (key === "incomp") {
+function updateLS() {
+    const incompTasksEl = document.querySelectorAll(".task.incomplete");
+    const compTasksEl = document.querySelectorAll(".task.complete");
+
+    if (incompTasksEl) {
+        incompTasksEl.forEach((incompTaskEl) => {
+            //title
+            const incompTaskElTitle = incompTaskEl.querySelector(".task-title").innerText;
+
+            //observations
+            const incompTaskElObs = incompTaskEl.querySelector(".popover-btn").getAttribute("data-bs-content");
+
+            //priority
+            let incompTaskElPriority = "normal";
+            if (incompTaskEl.classList.contains("low")) {
+                incompTaskElPriority = "low";
+            } else if (incompTaskEl.classList.contains("normal")) {
+                incompTaskElPriority = "normal";
+            } else if (incompTaskEl.classList.contains("high")) {
+                incompTaskElPriority = "high";
+            }
+
+            //object
+            const incompTaskObj = new Task(incompTaskElTitle, incompTaskElObs, incompTaskElPriority, "imcomplete");
+
+            LSIncompTasks.push(incompTaskObj);
+            createTask(incompTaskObj);
+        });
+
         localStorage.setItem("incomp-tasks", JSON.stringify(LSIncompTasks));
-    } else if (key === "comp") {
+    } else if (compTasksEl) {
+        compTasksEl.forEach((compTaskEl) => {
+            //title
+            const compTaskElTitle = compTaskEl.querySelector(".task-title").innerText;
+
+            //observations
+            const compTaskElObs = compTaskEl.querySelector(".popover-btn").getAttribute("data-bs-content");
+
+            //priority
+            const compTaskElPriority = "normal";
+            if (compTaskEl.classList.contains("low")) {
+                compTaskElPriority = "low";
+            } else if (compTaskEl.classList.contains("normal")) {
+                compTaskElPriority = "normal";
+            } else if (compTaskEl.classList.contains("high")) {
+                compTaskElPriority = "high";
+            }
+
+            //object
+            const compTaskObj = new Task(compTaskElTitle, compTaskElObs, compTaskElPriority, "complete");
+
+            LSCompTasks.push(compTaskObj);
+            createTask(compTaskObj);
+        });
+
         localStorage.setItem("comp-tasks", JSON.stringify(LSCompTasks));
     }
 }
