@@ -1,14 +1,12 @@
 //--------------------------------------------------------------------
 //IMPORTS
-//"task" class
+//class
 import { Task } from "./class/task-class.js";
-//createPopovers function
+//function
 import { createPopovers } from "./popovers.js";
-//LSIncompTasks objects array
+//objects array
 import { LSIncompTasks } from "./ls-verif.js";
-//LSIncompTasks objects array
-import { LSCompTasks } from "./ls-verif.js";
-//
+//function
 import { updateLS } from "./ls-verif.js";
 
 //--------------------------------------------------------------------
@@ -30,6 +28,8 @@ addNewTaskForm.addEventListener("submit", (e) => {
     const newTaskPriority = priorityInput.value;
     const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
     LSIncompTasks.push(newTask);
+    console.log("ADD: ");
+    console.log(LSIncompTasks);
 
     clearForm();
 
@@ -48,10 +48,27 @@ function clearForm() {
     priorityInput.value = "0";
 }
 
+//for moving tasks
+function moveTask() {
+    const tasks = document.querySelectorAll(".task");
+    tasks.forEach((task) => {
+        if (task.classList.contains("complete")) {
+            compTasksRow.appendChild(task);
+        } else if (task.classList.contains("incomplete")) {
+            incompTasksRow.appendChild(task);
+        }
+    });
+    updateStatusLS();
+}
+
 //for updating incomplete/complete tasks in LS
 function updateStatusLS() {
     const incompTasksEl = document.querySelectorAll(".task.incomplete");
+    console.log("ORIGINAL INC: ");
+    console.log(incompTasksEl);
     const compTasksEl = document.querySelectorAll(".task.complete");
+    console.log("ORIGINAL COMP: ");
+    console.log(compTasksEl);
     const newLSIncompTasks = [];
     const newLSCompTasks = [];
 
@@ -78,6 +95,8 @@ function updateStatusLS() {
 
             //update array
             newLSIncompTasks.push(incompTaskObj);
+            console.log("UPDATE INC: ");
+            console.log(newLSIncompTasks);
         });
     }
     //update LS
@@ -106,23 +125,12 @@ function updateStatusLS() {
 
             //update array
             newLSCompTasks.push(compTaskObj);
+            console.log("UPDATE COM: ");
+            console.log(newLSCompTasks);
         });
     }
     //update LS
     localStorage.setItem("comp-tasks", JSON.stringify(newLSCompTasks));
-}
-
-//for moving tasks
-function moveTask() {
-    const tasks = document.querySelectorAll(".task");
-    tasks.forEach((task) => {
-        if (task.classList.contains("complete")) {
-            compTasksRow.appendChild(task);
-        } else if (task.classList.contains("incomplete")) {
-            incompTasksRow.appendChild(task);
-        }
-    });
-    updateStatusLS();
 }
 
 //for creating tasks and adding to the HTML & LS (HTML only)
@@ -160,21 +168,22 @@ function createTask(taskObj) {
     const checkbox = taskEl.querySelector("input[type='checkbox']");
     const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
     const editBtn = taskEl.querySelector("#editBtn");
+    const deleteBtn = taskEl.querySelector("#deleteBtn");
 
     //checkbox eventListener
     checkbox.addEventListener("change", () => {
         if (taskEl.classList.contains("complete")) {
             taskObj.status = "incomplete";
-            changeTaskTo(taskEl, taskObj.status);
         } else {
             taskObj.status = "complete";
-            changeTaskTo(taskEl, taskObj.status);
         }
+
+        changeStyleTo(taskEl, taskObj.status);
         moveTask();
     });
 
     //for changing styles with task status
-    function changeTaskTo(taskEl, status) {
+    function changeStyleTo(taskEl, status) {
         if (status === "incomplete") {
             taskEl.classList.add("incomplete");
             taskEl.classList.remove("complete");
@@ -188,14 +197,12 @@ function createTask(taskObj) {
         }
     }
 
-    //insert into "Incomplete Tasks" row
-    incompTasksRow.appendChild(taskEl);
-
     //insert into corresponding row
-    moveTask();
+    //moveTask();
+    taskObj.status === "complete" ? compTasksRow.appendChild(taskEl) : incompTasksRow.appendChild(taskEl);
 
-    //
-    changeTaskTo(taskEl, taskObj.status);
+    //change style with task status
+    changeStyleTo(taskEl, taskObj.status);
 
     //popover creation
     createPopovers();
