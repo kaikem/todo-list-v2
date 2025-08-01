@@ -3,13 +3,13 @@ const dateHeading = document.getElementById("dateHeading");
 const greetingsMessage = document.getElementById("greetingsMessage");
 
 //DATE & TIME VARIABLES
-const date = new Date();
-const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
-const day = date.getDate();
-const month = date.toLocaleDateString("en-US", { month: "long" });
-const hours = date.getHours();
-const minutes = date.getMinutes();
-const dayOrder = "th";
+let date = new Date();
+let dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
+let day = date.getDate();
+let month = date.toLocaleDateString("en-US", { month: "long" });
+let hours = date.getHours();
+let minutes = date.getMinutes();
+let dayOrder = "th";
 if (day === 1) {
     dayOrder = "st";
 } else if (day === 2) {
