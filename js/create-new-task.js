@@ -28,8 +28,6 @@ addNewTaskForm.addEventListener("submit", (e) => {
     const newTaskPriority = priorityInput.value;
     const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
     LSIncompTasks.push(newTask);
-    console.log("ADD: ");
-    console.log(LSIncompTasks);
 
     clearForm();
 
@@ -64,11 +62,7 @@ function moveTask() {
 //for updating incomplete/complete tasks in LS
 function updateStatusLS() {
     const incompTasksEl = document.querySelectorAll(".task.incomplete");
-    console.log("ORIGINAL INC: ");
-    console.log(incompTasksEl);
     const compTasksEl = document.querySelectorAll(".task.complete");
-    console.log("ORIGINAL COMP: ");
-    console.log(compTasksEl);
     const newLSIncompTasks = [];
     const newLSCompTasks = [];
 
@@ -95,8 +89,6 @@ function updateStatusLS() {
 
             //update array
             newLSIncompTasks.push(incompTaskObj);
-            console.log("UPDATE INC: ");
-            console.log(newLSIncompTasks);
         });
     }
     //update LS
@@ -125,8 +117,6 @@ function updateStatusLS() {
 
             //update array
             newLSCompTasks.push(compTaskObj);
-            console.log("UPDATE COM: ");
-            console.log(newLSCompTasks);
         });
     }
     //update LS
@@ -162,13 +152,30 @@ function createTask(taskObj) {
                             <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-warning px-2 py-1" title="Edit this Task" data-bs-toggle="modal" data-bs-target="#editTaskModal"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button id="deleteBtn" class="task-btn btn btn-lg bg-transparent text-danger px-2 py-1" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
                         </div>
+
+                        <div id="deleteTaskModal" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header text-bg-danger">
+                                        <h3 class="modal-title">Delete Task</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete <b>THIS TASK?</b></p>
+                                        <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
+                                            <button type="button" id="modalCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-danger">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
     `;
 
     //inner elements
     const checkbox = taskEl.querySelector("input[type='checkbox']");
-    const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
-    const editBtn = taskEl.querySelector("#editBtn");
     const deleteBtn = taskEl.querySelector("#deleteBtn");
+    const editBtn = taskEl.querySelector("#editBtn");
+    const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
 
     //checkbox eventListener
     checkbox.addEventListener("change", () => {
@@ -181,6 +188,8 @@ function createTask(taskObj) {
         changeStyleTo(taskEl, taskObj.status);
         moveTask();
     });
+
+    //deleteBtn eventListener
 
     //for changing styles with task status
     function changeStyleTo(taskEl, status) {
@@ -198,7 +207,6 @@ function createTask(taskObj) {
     }
 
     //insert into corresponding row
-    //moveTask();
     taskObj.status === "complete" ? compTasksRow.appendChild(taskEl) : incompTasksRow.appendChild(taskEl);
 
     //change style with task status

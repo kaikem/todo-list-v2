@@ -15,7 +15,6 @@ const compTasksRow = document.getElementById("compTasksRow");
 //FUNCTION
 //for creating tasks on page load with LS Data
 let LSIncompTasks = JSON.parse(localStorage.getItem("incomp-tasks"));
-console.log(LSIncompTasks);
 let LSCompTasks = JSON.parse(localStorage.getItem("comp-tasks"));
 
 updateLS();
