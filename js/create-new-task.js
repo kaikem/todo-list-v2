@@ -1,16 +1,16 @@
-//--------------------------------------------------------------------
-//IMPORTS
+//IMPORTS ---------------------------------------------------
 //class
 import { Task } from "./class/task-class.js";
 //function
 import { createPopovers } from "./popovers.js";
-//objects array
-import { LSIncompTasks } from "./ls-verif.js";
-//function
-import { updateLS } from "./ls-verif.js";
 
-//--------------------------------------------------------------------
-//DOM ELEMENTS
+//EXISTING LS DATA ---------------------------------------------------
+let LSIncompTasks = JSON.parse(localStorage.getItem("incomp-tasks"));
+if (LSIncompTasks === null) LSIncompTasks = [];
+let LSCompTasks = JSON.parse(localStorage.getItem("comp-tasks"));
+if (LSCompTasks === null) LSCompTasks = [];
+
+//DOM ELEMENTS ---------------------------------------------------
 const incompTasksRow = document.getElementById("incompTasksRow");
 const compTasksRow = document.getElementById("compTasksRow");
 const addNewTaskForm = document.getElementById("addNewTaskForm");
@@ -19,8 +19,10 @@ const obsInput = document.getElementById("obsInput");
 const priorityInput = document.getElementById("priorityInput");
 const modalCancelBtn = document.getElementById("modalCancelBtn");
 
-//--------------------------------------------------------------------
-//EVENT LISTENERS
+//DOMLoad
+initialLoad();
+
+//EVENT LISTENERS ---------------------------------------------------
 //for modal "Create" btn
 addNewTaskForm.addEventListener("submit", (e) => {
     const newTaskTitle = titleInput.value;
@@ -28,22 +30,27 @@ addNewTaskForm.addEventListener("submit", (e) => {
     const newTaskPriority = priorityInput.value;
     const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
     LSIncompTasks.push(newTask);
+    console.log(LSIncompTasks);
 
     clearForm();
 
-    updateLS();
+    createTask(newTask);
 });
 
 //for modal "Cancel" btn
 modalCancelBtn.addEventListener("click", () => clearForm());
 
-//--------------------------------------------------------------------
-//FUNCTIONS
+//FUNCTIONS ---------------------------------------------------
 //for clearing the form
 function clearForm() {
     titleInput.value = "";
     obsInput.value = "";
     priorityInput.value = "0";
+}
+
+//
+function noIncompTasks() {
+    incompTasksRow.innerHTML = "<div class='mt-3 p-0'><h4 class='text-danger display-6'>No To-Do Tasks Registered<h4></div>";
 }
 
 //for moving tasks
@@ -56,71 +63,66 @@ function moveTask() {
             incompTasksRow.appendChild(task);
         }
     });
-    updateStatusLS();
+    updateTasksLS();
 }
 
-//for updating incomplete/complete tasks in LS
-function updateStatusLS() {
-    const incompTasksEl = document.querySelectorAll(".task.incomplete");
-    const compTasksEl = document.querySelectorAll(".task.complete");
-    const newLSIncompTasks = [];
-    const newLSCompTasks = [];
+//for updating tasks in LS
+function updateTasksLS() {
+    const tasksEl = document.querySelectorAll(".task");
+    const newIncompTasks = [];
+    const newCompTasks = [];
 
-    if (incompTasksEl) {
-        incompTasksEl.forEach((incompTaskEl) => {
+    if (tasksEl.length > 0) {
+        tasksEl.forEach((taskEl) => {
             //title
-            const incompTaskElTitle = incompTaskEl.querySelector(".task-title").innerText;
+            const taskElTitle = taskEl.querySelector(".task-title").innerText;
 
             //observations
-            const incompTaskElObs = incompTaskEl.querySelector(".popover-btn").getAttribute("data-bs-content");
+            const taskElObs = taskEl.querySelector(".popover-btn").getAttribute("data-bs-content");
 
             //priority
-            let incompTaskElPriority = "normal";
-            if (incompTaskEl.classList.contains("low")) {
-                incompTaskElPriority = "low";
-            } else if (incompTaskEl.classList.contains("normal")) {
-                incompTaskElPriority = "normal";
-            } else if (incompTaskEl.classList.contains("high")) {
-                incompTaskElPriority = "high";
+            let taskElPriority = "normal";
+            if (taskEl.classList.contains("low")) {
+                taskElPriority = "low";
+            } else if (taskEl.classList.contains("normal")) {
+                taskElPriority = "normal";
+            } else if (taskEl.classList.contains("high")) {
+                taskElPriority = "high";
+            }
+
+            //status
+            let taskElStatus = "incomplete";
+            if (taskEl.classList.contains("complete")) {
+                taskElStatus = "complete";
             }
 
             //object
-            const incompTaskObj = new Task(incompTaskElTitle, incompTaskElObs, incompTaskElPriority, "incomplete");
+            const taskObj = new Task(taskElTitle, taskElObs, taskElPriority, taskElStatus);
 
             //update array
-            newLSIncompTasks.push(incompTaskObj);
-        });
-    }
-    //update LS
-    localStorage.setItem("incomp-tasks", JSON.stringify(newLSIncompTasks));
-
-    if (compTasksEl) {
-        compTasksEl.forEach((compTaskEl) => {
-            //title
-            const compTaskElTitle = compTaskEl.querySelector(".task-title").innerText;
-
-            //observations
-            const compTaskElObs = compTaskEl.querySelector(".popover-btn").getAttribute("data-bs-content");
-
-            //priority
-            let compTaskElPriority = "normal";
-            if (compTaskEl.classList.contains("low")) {
-                compTaskElPriority = "low";
-            } else if (compTaskEl.classList.contains("normal")) {
-                compTaskElPriority = "normal";
-            } else if (compTaskEl.classList.contains("high")) {
-                compTaskElPriority = "high";
+            if (taskObj.status === "incomplete") {
+                newIncompTasks.push(taskObj);
+                LSIncompTasks = newIncompTasks;
+                localStorage.setItem("incomp-tasks", JSON.stringify(LSIncompTasks));
+            } else {
+                newCompTasks.push(taskObj);
+                LSCompTasks = newCompTasks;
+                localStorage.setItem("comp-tasks", JSON.stringify(LSCompTasks));
             }
-
-            //object
-            const compTaskObj = new Task(compTaskElTitle, compTaskElObs, compTaskElPriority, "complete");
-
-            //update array
-            newLSCompTasks.push(compTaskObj);
         });
+    } else {
+        LSIncompTasks = [];
+        LSCompTasks = [];
+        noIncompTasks();
+        localStorage.setItem("incomp-tasks", JSON.stringify(LSIncompTasks));
+        localStorage.setItem("comp-tasks", JSON.stringify(LSCompTasks));
     }
-    //update LS
-    localStorage.setItem("comp-tasks", JSON.stringify(newLSCompTasks));
+}
+
+//initial tasks load from LS
+function initialLoad() {
+    LSIncompTasks.forEach((LSIncompTask) => createTask(LSIncompTask));
+    LSCompTasks.forEach((LSCompTask) => createTask(LSCompTask));
 }
 
 //for creating tasks and adding to the HTML & LS (HTML only)
@@ -195,7 +197,7 @@ function createTask(taskObj) {
     //modalDeleteBtn eventListener
     modalDeleteBtn.addEventListener("click", () => {
         taskEl.remove();
-        updateStatusLS();
+        updateTasksLS();
     });
 
     //for changing styles with task status
@@ -221,8 +223,6 @@ function createTask(taskObj) {
 
     //popover creation
     createPopovers();
-}
 
-//--------------------------------------------------------------------
-//EXPORTS
-export { createTask };
+    updateTasksLS();
+}
