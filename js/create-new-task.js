@@ -154,7 +154,7 @@ function createTask(taskObj) {
                                 id="infoBtn"
                                 class="task-btn popover-btn btn btn-lg bg-transparent text-info px-2 py-1"
                                 data-bs-toggle="popover"
-                                data-bs-title="Observations"
+                                data-bs-title="${taskObj.title}"
                                 data-bs-content="${taskObj.obs}"
                             >
                                 <i class="fa-solid fa-circle-info"></i>
