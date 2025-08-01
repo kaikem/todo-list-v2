@@ -41,6 +41,13 @@ modalCancelBtn.addEventListener("click", () => clearForm());
 
 //--------------------------------------------------------------------
 //FUNCTIONS
+//for clearing the form
+function clearForm() {
+    titleInput.value = "";
+    obsInput.value = "";
+    priorityInput.value = "0";
+}
+
 //for updating incomplete/complete tasks in LS
 function updateStatusLS() {
     const incompTasksEl = document.querySelectorAll(".task.incomplete");
@@ -69,9 +76,11 @@ function updateStatusLS() {
             //object
             const incompTaskObj = new Task(incompTaskElTitle, incompTaskElObs, incompTaskElPriority, "incomplete");
 
+            //update array
             newLSIncompTasks.push(incompTaskObj);
         });
     }
+    //update LS
     localStorage.setItem("incomp-tasks", JSON.stringify(newLSIncompTasks));
 
     if (compTasksEl) {
@@ -95,18 +104,12 @@ function updateStatusLS() {
             //object
             const compTaskObj = new Task(compTaskElTitle, compTaskElObs, compTaskElPriority, "complete");
 
+            //update array
             newLSCompTasks.push(compTaskObj);
         });
-
-        localStorage.setItem("comp-tasks", JSON.stringify(newLSCompTasks));
     }
-}
-
-//for clearing the form
-function clearForm() {
-    titleInput.value = "";
-    obsInput.value = "";
-    priorityInput.value = "0";
+    //update LS
+    localStorage.setItem("comp-tasks", JSON.stringify(newLSCompTasks));
 }
 
 //for moving tasks
@@ -162,23 +165,37 @@ function createTask(taskObj) {
     checkbox.addEventListener("change", () => {
         if (taskEl.classList.contains("complete")) {
             taskObj.status = "incomplete";
+            changeTaskTo(taskEl, taskObj.status);
+        } else {
+            taskObj.status = "complete";
+            changeTaskTo(taskEl, taskObj.status);
+        }
+        moveTask();
+    });
+
+    //for changing styles with task status
+    function changeTaskTo(taskEl, status) {
+        if (status === "incomplete") {
             taskEl.classList.add("incomplete");
             taskEl.classList.remove("complete");
             taskBtnsCont.classList.remove("complete");
             editBtn.classList.remove("d-none");
-        } else {
-            taskObj.status = "complete";
+        } else if (status === "complete") {
             taskEl.classList.remove("incomplete");
             taskEl.classList.add("complete");
             taskBtnsCont.classList.add("complete");
             editBtn.classList.add("d-none");
         }
-        moveTask();
-    });
+    }
 
     //insert into "Incomplete Tasks" row
     incompTasksRow.appendChild(taskEl);
+
+    //insert into corresponding row
     moveTask();
+
+    //
+    changeTaskTo(taskEl, taskObj.status);
 
     //popover creation
     createPopovers();
