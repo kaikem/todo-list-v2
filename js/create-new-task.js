@@ -150,20 +150,22 @@ function createTask(taskObj) {
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
                             <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-warning px-2 py-1" title="Edit this Task" data-bs-toggle="modal" data-bs-target="#editTaskModal"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button id="deleteBtn" class="task-btn btn btn-lg bg-transparent text-danger px-2 py-1" title="Delete this Task"><i class="fa-solid fa-trash"></i></button>
+                            <button id="deleteBtn" class="task-btn btn btn-lg bg-transparent text-danger px-2 py-1" title="Delete this Task" data-bs-toggle="modal" data-bs-target="#deleteTaskModal${
+                                taskObj.title
+                            }"><i class="fa-solid fa-trash"></i></button>
                         </div>
 
-                        <div id="deleteTaskModal" class="modal fade">
+                        <div id="deleteTaskModal${taskObj.title}" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header text-bg-danger">
                                         <h3 class="modal-title">Delete Task</h3>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Are you sure you want to delete <b>THIS TASK?</b></p>
+                                        <p>Are you sure you want to delete <b>${taskObj.title}</b>?</p>
                                         <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
                                             <button type="button" id="modalCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-danger">Delete</button>
+                                            <button type="submit" id="modalDeleteBtn" class="modal-btn btn btn-danger" data-bs-dismiss="modal">Delete</button>
                                         </div>
                                     </div>
                                 </div>
@@ -173,7 +175,8 @@ function createTask(taskObj) {
 
     //inner elements
     const checkbox = taskEl.querySelector("input[type='checkbox']");
-    const deleteBtn = taskEl.querySelector("#deleteBtn");
+    const deleteModal = taskEl.querySelector(`#deleteTaskModal${taskObj.title}`);
+    const modalDeleteBtn = deleteModal.querySelector("#modalDeleteBtn");
     const editBtn = taskEl.querySelector("#editBtn");
     const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
 
@@ -189,7 +192,11 @@ function createTask(taskObj) {
         moveTask();
     });
 
-    //deleteBtn eventListener
+    //modalDeleteBtn eventListener
+    modalDeleteBtn.addEventListener("click", () => {
+        taskEl.remove();
+        updateStatusLS();
+    });
 
     //for changing styles with task status
     function changeStyleTo(taskEl, status) {
