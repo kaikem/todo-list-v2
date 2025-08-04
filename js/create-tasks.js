@@ -19,7 +19,8 @@ const titleInput = document.getElementById("titleInput");
 const obsInput = document.getElementById("obsInput");
 const priorityInput = document.getElementById("priorityInput");
 const modalCancelBtn = document.getElementById("modalCancelBtn");
-const duplicityToastEl = document.getElementById("duplicityToast");
+const addDuplicityToastEl = document.getElementById("addDuplicityToast");
+const editDuplicityToastEl = document.getElementById("editDuplicityToast");
 
 //DOMLoad
 initialLoad();
@@ -33,7 +34,6 @@ addNewTaskForm.addEventListener("submit", (event) => {
         const newTaskTitle = titleInput.value;
         const newTaskObs = obsInput.value;
         const newTaskPriority = priorityInput.value;
-        const duplicityToast = bootstrap.Toast.getOrCreateInstance(duplicityToastEl);
         let duplicatedTask = false;
         const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
 
@@ -47,7 +47,8 @@ addNewTaskForm.addEventListener("submit", (event) => {
 
         if (duplicatedTask == true) {
             event.preventDefault();
-            duplicityToast.show();
+            const addDuplicityToast = bootstrap.Toast.getOrCreateInstance(addDuplicityToastEl);
+            addDuplicityToast.show();
         } else {
             LSIncompTasks.push(newTask);
 
@@ -305,11 +306,27 @@ function createTask(taskObj) {
         if (!editTaskForm.checkValidity()) {
             event.preventDefault();
         } else {
-            taskTitleEl.innerText = editTitleInput.value;
-            taskObsEl.setAttribute("data-bs-content", editObsInput.value);
-            taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 incomplete ${editPriorityInput.value}`;
+            let duplicatedTask = false;
 
-            updateTasksLS();
+            LSIncompTasks.forEach((incompTask) => {
+                if (incompTask.title === editTitleInput.value) duplicatedTask = true;
+            });
+
+            LSCompTasks.forEach((compTask) => {
+                if (compTask.title === editTitleInput.value) duplicatedTask = true;
+            });
+
+            if (duplicatedTask == true) {
+                event.preventDefault();
+                const editDuplicityToast = bootstrap.Toast.getOrCreateInstance(editDuplicityToastEl);
+                editDuplicityToast.show();
+            } else {
+                taskTitleEl.innerText = editTitleInput.value;
+                taskObsEl.setAttribute("data-bs-content", editObsInput.value);
+                taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 incomplete ${editPriorityInput.value}`;
+
+                updateTasksLS();
+            }
         }
 
         editTaskForm.classList.add("was-validated");
