@@ -63,10 +63,11 @@
                     </div>
                     <div class="modal-body">
                         <!--task title-->
-                        <form id="addNewTaskForm">
+                        <form id="addNewTaskForm" class="needs-validation" novalidate>
                             <div class="new-task-input form-floating">
                                 <input type="text" id="titleInput" class="form-control" placeholder="Task Title" required />
                                 <label for="titleInput">Task Title</label>
+                                <div class="invalid-feedback">The Task Needs a Title</div>
                             </div>
                             <!--task observations-->
                             <div class="new-task-input form-floating mt-3">

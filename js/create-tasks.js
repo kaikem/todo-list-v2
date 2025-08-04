@@ -25,15 +25,21 @@ initialLoad();
 
 //EVENT LISTENERS ---------------------------------------------------
 //for modal "Create" btn
-addNewTaskForm.addEventListener("submit", (e) => {
-    const newTaskTitle = titleInput.value;
-    const newTaskObs = obsInput.value;
-    const newTaskPriority = priorityInput.value;
-    const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
-    LSIncompTasks.push(newTask);
+addNewTaskForm.addEventListener("submit", (event) => {
+    if (!addNewTaskForm.checkValidity()) {
+        event.preventDefault();
+    } else {
+        const newTaskTitle = titleInput.value;
+        const newTaskObs = obsInput.value;
+        const newTaskPriority = priorityInput.value;
+        const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
+        LSIncompTasks.push(newTask);
 
-    createTask(newTask);
-    updateTasksLS();
+        createTask(newTask);
+        updateTasksLS();
+    }
+
+    addNewTaskForm.classList.add("was-validated");
 });
 
 //for modal "Cancel" btn
@@ -211,10 +217,11 @@ function createTask(taskObj) {
                                     </div>
                                     <div class="modal-body">
                                         <!--task title-->
-                                        <form id="editTaskForm">
+                                        <form id="editTaskForm" class="needs-validation" novalidate>
                                             <div class="new-task-input form-floating">
                                                 <input type="text" id="editTitleInput" class="form-control" placeholder="Task Title" value="${taskObj.title}" required />
                                                 <label for="titleInput">Task Title</label>
+                                                <div class="invalid-feedback">The Task Needs a Title</div>
                                             </div>
                                             <!--task observations-->
                                             <div class="new-task-input form-floating mt-3">
@@ -277,12 +284,18 @@ function createTask(taskObj) {
     });
 
     //editTaskForm eventListener
-    editTaskForm.addEventListener("submit", (e) => {
-        taskTitleEl.innerText = editTitleInput.value;
-        taskObsEl.setAttribute("data-bs-content", editObsInput.value);
-        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 incomplete ${editPriorityInput.value}`;
+    editTaskForm.addEventListener("submit", (event) => {
+        if (!editTaskForm.checkValidity()) {
+            event.preventDefault();
+        } else {
+            taskTitleEl.innerText = editTitleInput.value;
+            taskObsEl.setAttribute("data-bs-content", editObsInput.value);
+            taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 incomplete ${editPriorityInput.value}`;
 
-        updateTasksLS();
+            updateTasksLS();
+        }
+
+        editTaskForm.classList.add("was-validated");
     });
 
     //for changing styles with task status
