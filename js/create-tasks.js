@@ -119,15 +119,21 @@ function updateTasksLS() {
 
     let incompTasksEl = document.querySelectorAll(".task.incomplete");
     let compTasksEl = document.querySelectorAll(".task.complete");
+    let pageTheme = localStorage.getItem("theme");
 
     function changeIncompHeading() {
         if (incompTasksEl.length <= 0) {
             todoTitle.classList.remove("text-light");
+            todoTitle.classList.remove("text-dark");
             todoTitle.classList.add("text-danger");
             todoTitle.innerText = "No To-Do Tasks Registered";
         } else {
-            todoTitle.classList.add("text-light");
             todoTitle.classList.remove("text-danger");
+            if (pageTheme === "light") {
+                todoTitle.classList.add("text-dark");
+            } else {
+                todoTitle.classList.add("text-light");
+            }
             todoTitle.innerText = "To-Do";
         }
     }
@@ -207,26 +213,26 @@ function createTask(taskObj) {
                                         <!--task title-->
                                         <form id="editTaskForm">
                                             <div class="new-task-input form-floating">
-                                                <input type="text" id="titleInput" class="form-control" placeholder="Task Title" value="${taskObj.title}" required />
+                                                <input type="text" id="editTitleInput" class="form-control" placeholder="Task Title" value="${taskObj.title}" required />
                                                 <label for="titleInput">Task Title</label>
                                             </div>
                                             <!--task observations-->
                                             <div class="new-task-input form-floating mt-3">
-                                                <textarea id="obsInput" class="form-control" style="height: 100px" placeholder="Task Observations">${taskObj.obs}</textarea>
+                                                <textarea id="editObsInput" class="form-control" style="height: 100px" placeholder="Task Observations">${taskObj.obs}</textarea>
                                                 <label for="obsInput">Task Observations</label>
                                             </div>
                                             <!--task priority-->
                                             <div class="new-task-input">
-                                                <label for="priorityInput" class="form-label mt-3">Select the Task Priority:</label>
-                                                <select id="priorityInput" class="form-select" required>
+                                                <label for="editPriorityInput" class="form-label mt-3">Select the Task Priority:</label>
+                                                <select id="editPriorityInput" class="form-select" required>
                                                     <option value="low" ${taskObj.priority === "low" ? "selected" : ""}>Low</option>
                                                     <option value="normal" ${taskObj.priority === "normal" ? "selected" : ""}>Normal</option>
                                                     <option value="high" ${taskObj.priority === "high" ? "selected" : ""}>High</option>
                                                 </select>
                                             </div>
                                             <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
-                                                <button type="button" id="modalCancelBtn" class="modal-btn btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                                                <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-success">Edit</button>
+                                                <button type="button" id="modalCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-warning">Edit</button>
                                             </div>
                                         </form>
                                     </div>
@@ -236,15 +242,21 @@ function createTask(taskObj) {
     `;
 
     //inner elements
-    const taskTitleEl = taskEl.querySelector(".task-title").innerText;
-    const taskObsEl = taskEl.querySelector(".popover-btn").getAttribute("data-bs-content");
-    const taskPriorityEl = taskEl.querySelector("#priorityInput");
+    const taskTitleEl = taskEl.querySelector(".task-title");
+    const taskObsEl = taskEl.querySelector(".popover-btn");
+    const taskPriorityEl = taskEl.querySelector("#editPriorityInput");
+    const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
+
     const checkbox = taskEl.querySelector("input[type='checkbox']");
+
     const editBtn = taskEl.querySelector("#editBtn");
     const editTaskForm = taskEl.querySelector("#editTaskForm");
+    const editTitleInput = taskEl.querySelector("#editTitleInput");
+    const editObsInput = taskEl.querySelector("#editObsInput");
+    const editPriorityInput = taskEl.querySelector("#editPriorityInput");
+
     const deleteModal = taskEl.querySelector(`#deleteTaskModal${taskObj.title}`);
     const modalDeleteBtn = deleteModal.querySelector("#modalDeleteBtn");
-    const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
 
     //checkbox eventListener
     checkbox.addEventListener("change", () => {
@@ -266,9 +278,9 @@ function createTask(taskObj) {
 
     //editTaskForm eventListener
     editTaskForm.addEventListener("submit", (e) => {
-        taskTitleEl.innerText = titleInput.value;
-        taskObsEl.setAttribute(obsInput.value);
-        taskPriorityEl.value = priorityInput.value;
+        taskTitleEl.innerText = editTitleInput.value;
+        taskObsEl.setAttribute("data-bs-content", editObsInput.value);
+        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 incomplete ${editPriorityInput.value}`;
 
         updateTasksLS();
     });
