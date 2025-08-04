@@ -19,6 +19,7 @@ const titleInput = document.getElementById("titleInput");
 const obsInput = document.getElementById("obsInput");
 const priorityInput = document.getElementById("priorityInput");
 const modalCancelBtn = document.getElementById("modalCancelBtn");
+const duplicityToastEl = document.getElementById("duplicityToast");
 
 //DOMLoad
 initialLoad();
@@ -32,6 +33,7 @@ addNewTaskForm.addEventListener("submit", (event) => {
         const newTaskTitle = titleInput.value;
         const newTaskObs = obsInput.value;
         const newTaskPriority = priorityInput.value;
+        const duplicityToast = bootstrap.Toast.getOrCreateInstance(duplicityToastEl);
         let duplicatedTask = false;
         const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
 
@@ -45,7 +47,7 @@ addNewTaskForm.addEventListener("submit", (event) => {
 
         if (duplicatedTask == true) {
             event.preventDefault();
-            alert("A Task with the same Title already exists! Please choose another Title.");
+            duplicityToast.show();
         } else {
             LSIncompTasks.push(newTask);
 
