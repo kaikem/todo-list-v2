@@ -6,10 +6,8 @@ import { createPopovers } from "./popovers.js";
 
 //EXISTING LS DATA ---------------------------------------------------
 let LSIncompTasks = JSON.parse(localStorage.getItem("incomp-tasks"));
-console.log(LSIncompTasks);
 if (LSIncompTasks === null) LSIncompTasks = [];
 let LSCompTasks = JSON.parse(localStorage.getItem("comp-tasks"));
-console.log(LSCompTasks);
 if (LSCompTasks === null) LSCompTasks = [];
 
 //DOM ELEMENTS ---------------------------------------------------
@@ -48,9 +46,6 @@ function initialLoad() {
     LSCompTasks.forEach((LSCompTask) => createTask(LSCompTask));
 
     updateTasksLS();
-    console.log("initial load");
-    console.log(LSIncompTasks);
-    console.log(LSCompTasks);
 }
 
 //for clearing the form
@@ -75,15 +70,12 @@ function moveTask() {
 
 //for updating tasks in LS
 function updateTasksLS() {
-    console.log("Início updateTasksLS");
     const tasksEl = document.querySelectorAll(".task");
-    console.log(tasksEl);
 
     const newIncompTasks = [];
     const newCompTasks = [];
 
     if (tasksEl.length > 0) {
-        console.log("INSIDE");
         tasksEl.forEach((taskEl) => {
             //title
             const taskElTitle = taskEl.querySelector(".task-title").innerText;
@@ -126,9 +118,7 @@ function updateTasksLS() {
     //for chaging the incomp row heading
 
     let incompTasksEl = document.querySelectorAll(".task.incomplete");
-    console.log(incompTasksEl);
     let compTasksEl = document.querySelectorAll(".task.complete");
-    console.log(compTasksEl);
 
     function changeIncompHeading() {
         if (incompTasksEl.length <= 0) {
@@ -180,12 +170,15 @@ function createTask(taskObj) {
                             >
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
-                            <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-warning px-2 py-1" title="Edit this Task" data-bs-toggle="modal" data-bs-target="#editTaskModal"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-warning px-2 py-1" title="Edit this Task" data-bs-toggle="modal" data-bs-target="#editTaskModal${
+                                taskObj.title
+                            }"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button id="deleteBtn" class="task-btn btn btn-lg bg-transparent text-danger px-2 py-1" title="Delete this Task" data-bs-toggle="modal" data-bs-target="#deleteTaskModal${
                                 taskObj.title
                             }"><i class="fa-solid fa-trash"></i></button>
                         </div>
 
+                        <!--delete task modal-->
                         <div id="deleteTaskModal${taskObj.title}" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -202,13 +195,55 @@ function createTask(taskObj) {
                                 </div>
                             </div>
                         </div>
+
+                        <!--edit task modal-->
+                        <div id="editTaskModal${taskObj.title}" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header text-bg-warning">
+                                        <h3 class="modal-title">Edit Task</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!--task title-->
+                                        <form id="editTaskForm">
+                                            <div class="new-task-input form-floating">
+                                                <input type="text" id="titleInput" class="form-control" placeholder="Task Title" value="${taskObj.title}" required />
+                                                <label for="titleInput">Task Title</label>
+                                            </div>
+                                            <!--task observations-->
+                                            <div class="new-task-input form-floating mt-3">
+                                                <textarea id="obsInput" class="form-control" style="height: 100px" placeholder="Task Observations">${taskObj.obs}</textarea>
+                                                <label for="obsInput">Task Observations</label>
+                                            </div>
+                                            <!--task priority-->
+                                            <div class="new-task-input">
+                                                <label for="priorityInput" class="form-label mt-3">Select the Task Priority:</label>
+                                                <select id="priorityInput" class="form-select" required>
+                                                    <option value="low" ${taskObj.priority === "low" ? "selected" : ""}>Low</option>
+                                                    <option value="normal" ${taskObj.priority === "normal" ? "selected" : ""}>Normal</option>
+                                                    <option value="high" ${taskObj.priority === "high" ? "selected" : ""}>High</option>
+                                                </select>
+                                            </div>
+                                            <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
+                                                <button type="button" id="modalCancelBtn" class="modal-btn btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-success">Edit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
     `;
 
     //inner elements
+    const taskTitleEl = taskEl.querySelector(".task-title").innerText;
+    const taskObsEl = taskEl.querySelector(".popover-btn").getAttribute("data-bs-content");
+    const taskPriorityEl = taskEl.querySelector("#priorityInput");
     const checkbox = taskEl.querySelector("input[type='checkbox']");
+    const editBtn = taskEl.querySelector("#editBtn");
+    const editTaskForm = taskEl.querySelector("#editTaskForm");
     const deleteModal = taskEl.querySelector(`#deleteTaskModal${taskObj.title}`);
     const modalDeleteBtn = deleteModal.querySelector("#modalDeleteBtn");
-    const editBtn = taskEl.querySelector("#editBtn");
     const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
 
     //checkbox eventListener
@@ -226,6 +261,15 @@ function createTask(taskObj) {
     //modalDeleteBtn eventListener
     modalDeleteBtn.addEventListener("click", () => {
         taskEl.remove();
+        updateTasksLS();
+    });
+
+    //editTaskForm eventListener
+    editTaskForm.addEventListener("submit", (e) => {
+        taskTitleEl.innerText = titleInput.value;
+        taskObsEl.setAttribute(obsInput.value);
+        taskPriorityEl.value = priorityInput.value;
+
         updateTasksLS();
     });
 
