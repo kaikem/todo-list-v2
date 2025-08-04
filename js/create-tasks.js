@@ -32,11 +32,26 @@ addNewTaskForm.addEventListener("submit", (event) => {
         const newTaskTitle = titleInput.value;
         const newTaskObs = obsInput.value;
         const newTaskPriority = priorityInput.value;
+        let duplicatedTask = false;
         const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
-        LSIncompTasks.push(newTask);
 
-        createTask(newTask);
-        updateTasksLS();
+        LSIncompTasks.forEach((incompTask) => {
+            if (incompTask.title === newTask.title) duplicatedTask = true;
+        });
+
+        LSCompTasks.forEach((compTask) => {
+            if (compTask.title === newTask.title) duplicatedTask = true;
+        });
+
+        if (duplicatedTask == true) {
+            event.preventDefault();
+            alert("A Task with the same Title already exists! Please choose another Title.");
+        } else {
+            LSIncompTasks.push(newTask);
+
+            createTask(newTask);
+            updateTasksLS();
+        }
     }
 
     addNewTaskForm.classList.add("was-validated");
