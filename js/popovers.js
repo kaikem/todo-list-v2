@@ -1,3 +1,4 @@
+//FUNCTION ---------------------------------------------------
 function createPopovers() {
     const popoverBtns = document.querySelectorAll(".popover-btn");
 
@@ -6,4 +7,5 @@ function createPopovers() {
     });
 }
 
+//EXPORT ---------------------------------------------------
 export { createPopovers };
