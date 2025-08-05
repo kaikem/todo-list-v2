@@ -1,8 +1,8 @@
-//DOM ELEMENTS
+//DOM ELEMENTS ---------------------------------------------------
 const dateHeading = document.getElementById("dateHeading");
 const greetingsMessage = document.getElementById("greetingsMessage");
 
-//DATE & TIME VARIABLES
+//DATE & TIME VARIABLES ---------------------------------------------------
 let date = new Date();
 let dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
 let day = date.getDate();
@@ -18,10 +18,11 @@ if (day === 1) {
     dayOrder = "rd";
 }
 
-//DATE HEADING
+//HEADINGS ---------------------------------------------------
+//date
 dateHeading.innerHTML = `${dayOfWeek}, ${month} ${day}${dayOrder}`;
 
-//GREETINGS HEADING
+//greetings
 if (hours > 0 && hours <= 11) {
     greetingsMessage.innerText = "Good morning!";
 } else if (hours > 11 && hours <= 18) {
