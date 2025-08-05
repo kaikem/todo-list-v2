@@ -13,7 +13,8 @@ body.bg-dark {
   background-image: linear-gradient(90deg, rgb(16, 15, 15) 0%, rgb(15, 14, 14) 50%, rgb(0, 4, 25) 100%);
 }
 
-#incompTasksRow {
+#incompTasksRow,
+#compTasksRow {
   padding: inherit !important;
 }
 
