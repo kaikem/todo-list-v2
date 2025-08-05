@@ -1,7 +1,8 @@
 //IMPORTS ---------------------------------------------------
-//class
+//classes
 import { Task } from "./class/task-class.js";
-//function
+
+//functions
 import { createPopovers } from "./popovers.js";
 
 //EXISTING LS DATA ---------------------------------------------------
@@ -25,7 +26,7 @@ const addDuplicityToastEl = document.getElementById("addDuplicityToast");
 initialLoad();
 
 //EVENT LISTENERS ---------------------------------------------------
-//for modal "Create" btn
+//modal "Add New Task" Create btn
 addNewTaskForm.addEventListener("submit", (event) => {
     if (!addNewTaskForm.checkValidity()) {
         event.preventDefault();
@@ -33,16 +34,9 @@ addNewTaskForm.addEventListener("submit", (event) => {
         const newTaskTitle = titleInput.value;
         const newTaskObs = obsInput.value;
         const newTaskPriority = priorityInput.value;
-        let duplicatedTask = false;
         const newTask = new Task(newTaskTitle, newTaskObs, newTaskPriority, "incomplete");
 
-        LSIncompTasks.forEach((incompTask) => {
-            if (incompTask.title === newTask.title) duplicatedTask = true;
-        });
-
-        LSCompTasks.forEach((compTask) => {
-            if (compTask.title === newTask.title) duplicatedTask = true;
-        });
+        const duplicatedTask = checkDuplicates(newTask.title);
 
         if (duplicatedTask == true) {
             event.preventDefault();
@@ -59,7 +53,7 @@ addNewTaskForm.addEventListener("submit", (event) => {
     addNewTaskForm.classList.add("was-validated");
 });
 
-//for modal "Add New Task" Cancel btn
+//modal "Add New Task" Cancel btn
 addCancelBtn.addEventListener("click", () => clearForm(addNewTaskForm, titleInput, obsInput, priorityInput));
 
 //FUNCTIONS ---------------------------------------------------
@@ -78,6 +72,21 @@ function clearForm(form, titleInput, obsInput, priorityInput) {
     priorityInput.value = "low";
     form.classList.remove("was-validated");
     form.classList.add("needs-validation");
+}
+
+//for checking task duplicates
+function checkDuplicates(taskTitle) {
+    let duplicatedTask = false;
+
+    LSIncompTasks.forEach((incompTask) => {
+        if (incompTask.title === taskTitle) duplicatedTask = true;
+    });
+
+    LSCompTasks.forEach((compTask) => {
+        if (compTask.title === taskTitle) duplicatedTask = true;
+    });
+
+    return duplicatedTask;
 }
 
 //for moving tasks
@@ -141,7 +150,6 @@ function updateTasksLS() {
     }
 
     //for chaging the incomp row heading
-
     let incompTasksEl = document.querySelectorAll(".task.incomplete");
     let compTasksEl = document.querySelectorAll(".task.complete");
     let pageTheme = localStorage.getItem("theme");
@@ -196,7 +204,7 @@ function createTask(taskObj) {
                                 id="infoBtn"
                                 class="task-btn popover-btn btn btn-lg bg-transparent text-info px-2 py-1"
                                 data-bs-toggle="popover"
-                                data-bs-title="${taskObj.title}"
+                                data-bs-title="${taskObj.title} (Prio.: ${taskObj.priority})"
                                 data-bs-content="${taskObj.obs}"
                             >
                                 <i class="fa-solid fa-circle-info"></i>
@@ -311,13 +319,17 @@ function createTask(taskObj) {
         updateTasksLS();
     });
 
-    //for modal "Edit Task" Cancel btn
+    //modal "Edit Task" Cancel btn
     editCancelBtn.addEventListener("click", () => {
+        editTaskForm.classList.remove("was-validated");
+        editTaskForm.classList.add("needs-validation");
+    });
+
+    //modal "Edit Task" reset values of inputs when opened
+    editBtn.addEventListener("click", () => {
         editTitleInput.value = taskObj.title;
         editObsInput.value = taskObj.obs;
         editPriorityInput.value = taskObj.priority;
-        editTaskForm.classList.remove("was-validated");
-        editTaskForm.classList.add("needs-validation");
     });
 
     //editTaskForm eventListener
@@ -325,15 +337,7 @@ function createTask(taskObj) {
         if (!editTaskForm.checkValidity()) {
             event.preventDefault();
         } else {
-            let duplicatedTask = false;
-
-            LSIncompTasks.forEach((incompTask) => {
-                if (incompTask.title === editTitleInput.value) duplicatedTask = true;
-            });
-
-            LSCompTasks.forEach((compTask) => {
-                if (compTask.title === editTitleInput.value) duplicatedTask = true;
-            });
+            let duplicatedTask = checkDuplicates(editTitleInput.value);
 
             if (taskObj.title === editTitleInput.value) duplicatedTask = false;
 
@@ -368,12 +372,9 @@ function createTask(taskObj) {
         }
     }
 
-    //insert into corresponding row
     taskObj.status === "complete" ? compTasksRow.appendChild(taskEl) : incompTasksRow.appendChild(taskEl);
 
-    //change style with task status
     changeStyleTo(taskEl, taskObj.status);
 
-    //popover creation
     createPopovers();
 }
