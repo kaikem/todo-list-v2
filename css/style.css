@@ -53,7 +53,7 @@ body.bg-dark {
 #darkmodeBtn {
   width: 25px;
   height: 25px;
-  background-image: url("../images/sun.svg");
+  background-image: url("../../todo-list-v2/images/sun.svg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 70%;

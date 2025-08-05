@@ -24,7 +24,7 @@ function changeTheme(condition1, condition2) {
         localStorage.setItem("theme", "light");
     } else if (condition2) {
         darkmodeBtn.classList.remove("btn-dark");
-        darkmodeBtn.style.backgroundImage = `url("../images/sun.svg")`;
+        darkmodeBtn.style.backgroundImage = `url("..todo-list-v2/images/sun.svg")`;
         pageBody.classList.add("bg-dark");
         pageBody.classList.remove("bg-light");
         headings.classList.remove("text-dark");
