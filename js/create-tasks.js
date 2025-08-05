@@ -368,7 +368,7 @@ function createTask(taskObj) {
             } else {
                 taskTitleEl.innerText = editTitleInput.value;
                 taskObsEl.setAttribute("data-bs-content", editObsInput.value);
-                taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 incomplete ${editPriorityInput.value}`;
+                taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow p-1 mt-2 incomplete ${editPriorityInput.value}`;
 
                 updateTasksLS();
             }
