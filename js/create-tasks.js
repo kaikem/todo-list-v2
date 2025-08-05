@@ -207,15 +207,15 @@ function createTask(taskObj) {
     //html element
     const taskEl = document.createElement("div");
     if (taskObj.status === "incomplete") {
-        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 incomplete ${taskObj.priority}`;
+        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow p-1 mt-2 incomplete ${taskObj.priority}`;
     } else if (taskObj.status === "complete") {
-        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow mt-2 complete ${taskObj.priority}`;
+        taskEl.className = `task rounded-3 d-flex justify-content-between align-items-center shadow p-1 mt-2 complete ${taskObj.priority}`;
     }
     taskEl.innerHTML = `
                         <!--checkbox & title-->
                         <div class="task-title-cont d-flex align-items-center">
                             <input type="checkbox" class="task-checkbox form-check-input my-0 me-2" ${taskObj.status === "complete" ? "checked" : ""}/>
-                            <h3 class="task-title m-0">${taskObj.title}</h3>
+                            <h5 class="task-title m-0">${taskObj.title}</h5>
                         </div>
                         <!--info, edit & delete btns-->
                         <div id="taskBtnsCont" class="task-btns-cont d-flex rounded-3 ms-3">
