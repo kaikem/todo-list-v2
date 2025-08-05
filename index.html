@@ -13,12 +13,16 @@
             <div class="container">
                 <div id="headerRow" class="row">
                     <div class="d-flex justify-content-between">
+                        <!--headgins-->
                         <div class="headings text-light">
                             <h1 id="greetingsMessage" class="greetings-message m-0"></h1>
                             <h4 id="dateHeading" class="date-heading text-capitalize m-0"></h4>
                         </div>
+                        <!--headers btns-->
                         <div class="header-buttons d-flex flex-column align-items-end justify-content-between">
+                            <!--darkmode btn-->
                             <button id="darkmodeBtn" class="btn btn-light" title="Toggle Light/Dark Modes"></button>
+                            <!--add btn-->
                             <button id="addBtn" class="btn btn-success d-none d-sm-inline-block py-1" title="Add a New Task" data-bs-toggle="modal" data-bs-target="#newTaskModal">
                                 <i class="fa-solid fa-plus"></i> Add New Task
                             </button>
@@ -45,6 +49,7 @@
                         <h1 id="todoTitle" class="display-6 mt-2 text-light"></h1>
                     </div>
                 </div>
+
                 <div id="compTasksRow" class="row mt-5">
                     <div class="col-12 d-flex flex-column p-0">
                         <span id="completedHR" class="rounded-5 bg-success"></span>
@@ -84,7 +89,7 @@
                                 </select>
                             </div>
                             <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
-                                <button type="button" id="modalCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" id="addCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-success">Create</button>
                             </div>
                         </form>
@@ -93,51 +98,6 @@
                 <!--duplicity toast-->
                 <div class="toast-container w-100">
                     <div id="addDuplicityToast" class="toast text-bg-danger w-100">
-                        <div class="toast-header fw-bold text-bg-danger text-uppercase">Duplicated Task</div>
-                        <div class="toast-body">A Task with the same Title already exists! Please choose another Title.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--EDIT TASK MODAL-->
-        <div id="editTaskModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header text-bg-warning">
-                        <h3 class="modal-title">Edit Task</h3>
-                    </div>
-                    <div class="modal-body">
-                        <!--task title-->
-                        <form id="editTaskForm">
-                            <div class="edit-task-input form-floating">
-                                <input type="text" id="titleInput" class="form-control" placeholder="Task Title" required />
-                                <label for="titleInput">Task Title</label>
-                            </div>
-                            <!--task observations-->
-                            <div class="edit-task-input form-floating mt-3">
-                                <textarea id="obsInput" class="form-control" style="height: 100px" placeholder="Task Observations"></textarea>
-                                <label for="obsInput">Task Observations</label>
-                            </div>
-                            <!--task priority-->
-                            <div class="edit-task-input">
-                                <select id="priorityInput" class="form-select mt-3" required>
-                                    <option value="0">*Select Task Priority*</option>
-                                    <option value="low">Low</option>
-                                    <option value="normal">Normal</option>
-                                    <option value="high">High</option>
-                                </select>
-                            </div>
-                            <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
-                                <button type="button" id="modalCancelBtn" class="modal-btn btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-primary">Confirm</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!--duplicity toast-->
-                <div class="toast-container w-100">
-                    <div id="editDuplicityToast" class="toast text-bg-danger w-100">
                         <div class="toast-header fw-bold text-bg-danger text-uppercase">Duplicated Task</div>
                         <div class="toast-body">A Task with the same Title already exists! Please choose another Title.</div>
                     </div>
