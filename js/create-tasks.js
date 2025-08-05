@@ -92,7 +92,7 @@ function checkDuplicates(taskTitle) {
 //for chaging the incomp row heading (updateTasksLS FU)
 function changeIncompHeading() {
     let incompTasksEl = document.querySelectorAll(".task.incomplete");
-    let pageTheme = localStorage.getItem("theme");
+    let pageTheme = JSON.parse(localStorage.getItem("theme"));
 
     if (incompTasksEl.length <= 0) {
         todoTitle.classList.remove("text-light");
