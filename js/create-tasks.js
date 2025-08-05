@@ -57,7 +57,7 @@ addNewTaskForm.addEventListener("submit", (event) => {
 addCancelBtn.addEventListener("click", () => clearForm(addNewTaskForm, titleInput, obsInput, priorityInput));
 
 //FUNCTIONS ---------------------------------------------------
-//for the initial tasks load from LS
+//for the initial tasks load from LS (global)
 function initialLoad() {
     LSIncompTasks.forEach((LSIncompTask) => createTask(LSIncompTask));
     LSCompTasks.forEach((LSCompTask) => createTask(LSCompTask));
@@ -65,7 +65,7 @@ function initialLoad() {
     updateTasksLS();
 }
 
-//for clearing the form
+//for clearing the form (addCancelBtn EL)
 function clearForm(form, titleInput, obsInput, priorityInput) {
     titleInput.value = "";
     obsInput.value = "";
@@ -74,7 +74,7 @@ function clearForm(form, titleInput, obsInput, priorityInput) {
     form.classList.add("needs-validation");
 }
 
-//for checking task duplicates
+//for checking task duplicates (editTaskForm EL + addNewTaskForm EL)
 function checkDuplicates(taskTitle) {
     let duplicatedTask = false;
 
@@ -89,7 +89,43 @@ function checkDuplicates(taskTitle) {
     return duplicatedTask;
 }
 
-//for moving tasks
+//for chaging the incomp row heading (updateTasksLS FU)
+function changeIncompHeading() {
+    let incompTasksEl = document.querySelectorAll(".task.incomplete");
+    let pageTheme = localStorage.getItem("theme");
+
+    if (incompTasksEl.length <= 0) {
+        todoTitle.classList.remove("text-light");
+        todoTitle.classList.remove("text-dark");
+        todoTitle.classList.add("text-danger");
+        todoTitle.innerText = "No To-Do Tasks Registered";
+    } else {
+        todoTitle.classList.remove("text-danger");
+        if (pageTheme === "light") {
+            todoTitle.classList.add("text-dark");
+        } else {
+            todoTitle.classList.add("text-light");
+        }
+        todoTitle.innerText = "To-Do";
+    }
+}
+
+//for changing styles with task status (checkbox EL + createTask FU)
+function changeStyleTo(taskEl, taskStatus, taskBtnsCont, editBtn) {
+    if (taskStatus === "incomplete") {
+        taskEl.classList.add("incomplete");
+        taskEl.classList.remove("complete");
+        taskBtnsCont.classList.remove("complete");
+        editBtn.classList.remove("d-none");
+    } else if (taskStatus === "complete") {
+        taskEl.classList.remove("incomplete");
+        taskEl.classList.add("complete");
+        taskBtnsCont.classList.add("complete");
+        editBtn.classList.add("d-none");
+    }
+}
+
+//for moving tasks (checkbox EL)
 function moveTask() {
     const tasks = document.querySelectorAll(".task");
     tasks.forEach((task) => {
@@ -102,7 +138,7 @@ function moveTask() {
     updateTasksLS();
 }
 
-//for updating tasks in LS
+//for updating tasks in LS (deleteConfirmBtn EL + editTaskForm EL + addNewTaskForm EL + initialLoad FU + moveTask FU)
 function updateTasksLS() {
     const tasksEl = document.querySelectorAll(".task");
 
@@ -149,27 +185,8 @@ function updateTasksLS() {
         });
     }
 
-    //for chaging the incomp row heading
     let incompTasksEl = document.querySelectorAll(".task.incomplete");
     let compTasksEl = document.querySelectorAll(".task.complete");
-    let pageTheme = localStorage.getItem("theme");
-
-    function changeIncompHeading() {
-        if (incompTasksEl.length <= 0) {
-            todoTitle.classList.remove("text-light");
-            todoTitle.classList.remove("text-dark");
-            todoTitle.classList.add("text-danger");
-            todoTitle.innerText = "No To-Do Tasks Registered";
-        } else {
-            todoTitle.classList.remove("text-danger");
-            if (pageTheme === "light") {
-                todoTitle.classList.add("text-dark");
-            } else {
-                todoTitle.classList.add("text-light");
-            }
-            todoTitle.innerText = "To-Do";
-        }
-    }
 
     if (incompTasksEl.length <= 0) {
         LSIncompTasks = [];
@@ -183,7 +200,7 @@ function updateTasksLS() {
     }
 }
 
-//for creating tasks and adding to the HTML & LS (HTML only)
+//for creating tasks and adding to the HTML (addNewTaskForm EL + initialLoad FU)
 function createTask(taskObj) {
     //html element
     const taskEl = document.createElement("div");
@@ -227,8 +244,8 @@ function createTask(taskObj) {
                                     <div class="modal-body">
                                         <p>Are you sure you want to delete <b>${taskObj.title}</b>?</p>
                                         <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
-                                            <button type="button" id="modalCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" id="modalDeleteBtn" class="modal-btn btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                                            <button type="button" id="deleteCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" id="deleteConfirmBtn" class="modal-btn btn btn-danger" data-bs-dismiss="modal">Delete</button>
                                         </div>
                                     </div>
                                 </div>
@@ -266,7 +283,7 @@ function createTask(taskObj) {
                                             </div>
                                             <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
                                                 <button type="button" id="editCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-warning">Edit</button>
+                                                <button type="submit" id="editConfirmBtn" class="modal-btn btn btn-warning">Edit</button>
                                             </div>
                                         </form>
                                     </div>
@@ -285,7 +302,6 @@ function createTask(taskObj) {
     //inner elements
     const taskTitleEl = taskEl.querySelector(".task-title");
     const taskObsEl = taskEl.querySelector(".popover-btn");
-    const taskPriorityEl = taskEl.querySelector("#editPriorityInput");
     const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
 
     const checkbox = taskEl.querySelector("input[type='checkbox']");
@@ -299,7 +315,7 @@ function createTask(taskObj) {
     const editCancelBtn = taskEl.querySelector("#editCancelBtn");
 
     const deleteModal = taskEl.querySelector(`#deleteTaskModal${taskObj.title}`);
-    const modalDeleteBtn = deleteModal.querySelector("#modalDeleteBtn");
+    const deleteConfirmBtn = deleteModal.querySelector("#deleteConfirmBtn");
 
     //checkbox eventListener
     checkbox.addEventListener("change", () => {
@@ -309,12 +325,12 @@ function createTask(taskObj) {
             taskObj.status = "complete";
         }
 
-        changeStyleTo(taskEl, taskObj.status);
+        changeStyleTo(taskEl, taskObj.status, taskBtnsCont, editBtn);
         moveTask();
     });
 
-    //modalDeleteBtn eventListener
-    modalDeleteBtn.addEventListener("click", () => {
+    //deleteConfirmBtn eventListener
+    deleteConfirmBtn.addEventListener("click", () => {
         taskEl.remove();
         updateTasksLS();
     });
@@ -357,24 +373,9 @@ function createTask(taskObj) {
         editTaskForm.classList.add("was-validated");
     });
 
-    //for changing styles with task status
-    function changeStyleTo(taskEl, status) {
-        if (status === "incomplete") {
-            taskEl.classList.add("incomplete");
-            taskEl.classList.remove("complete");
-            taskBtnsCont.classList.remove("complete");
-            editBtn.classList.remove("d-none");
-        } else if (status === "complete") {
-            taskEl.classList.remove("incomplete");
-            taskEl.classList.add("complete");
-            taskBtnsCont.classList.add("complete");
-            editBtn.classList.add("d-none");
-        }
-    }
-
     taskObj.status === "complete" ? compTasksRow.appendChild(taskEl) : incompTasksRow.appendChild(taskEl);
 
-    changeStyleTo(taskEl, taskObj.status);
+    changeStyleTo(taskEl, taskObj.status, taskBtnsCont, editBtn);
 
     createPopovers();
 }
