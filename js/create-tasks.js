@@ -202,6 +202,8 @@ function updateTasksLS() {
 
 //for creating tasks and adding to the HTML (addNewTaskForm EL + initialLoad FU)
 function createTask(taskObj) {
+    //task number
+    const taskNumber = Math.floor(Math.random() * 1000);
     //html element
     const taskEl = document.createElement("div");
     if (taskObj.status === "incomplete") {
@@ -226,16 +228,18 @@ function createTask(taskObj) {
                             >
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
-                            <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-warning px-2 py-1" title="Edit this Task" data-bs-toggle="modal" data-bs-target="#editTaskModal${
-                                taskObj.title
-                            }"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button id="deleteBtn" class="task-btn btn btn-lg bg-transparent text-danger px-2 py-1" title="Delete this Task" data-bs-toggle="modal" data-bs-target="#deleteTaskModal${
-                                taskObj.title
-                            }"><i class="fa-solid fa-trash"></i></button>
+                            <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-warning px-2 py-1" title="Edit this Task" data-bs-toggle="modal" data-bs-target="#editTaskModal${taskObj.title.replaceAll(
+                                " ",
+                                ""
+                            )}${taskNumber}"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button id="deleteBtn" class="task-btn btn btn-lg bg-transparent text-danger px-2 py-1" title="Delete this Task" data-bs-toggle="modal" data-bs-target="#deleteTaskModal${taskObj.title.replaceAll(
+                                " ",
+                                ""
+                            )}${taskNumber}"><i class="fa-solid fa-trash"></i></button>
                         </div>
 
                         <!--delete task modal-->
-                        <div id="deleteTaskModal${taskObj.title}" class="modal fade">
+                        <div id="deleteTaskModal${taskObj.title.replaceAll(" ", "")}${taskNumber}" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header text-bg-danger">
@@ -253,7 +257,7 @@ function createTask(taskObj) {
                         </div>
 
                         <!--edit task modal-->
-                        <div id="editTaskModal${taskObj.title}" class="modal fade">
+                        <div id="editTaskModal${taskObj.title.replaceAll(" ", "")}${taskNumber}" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header text-bg-warning">
@@ -314,7 +318,7 @@ function createTask(taskObj) {
     const editDuplicityToastEl = taskEl.querySelector("#editDuplicityToast");
     const editCancelBtn = taskEl.querySelector("#editCancelBtn");
 
-    const deleteModal = taskEl.querySelector(`#deleteTaskModal${taskObj.title}`);
+    const deleteModal = taskEl.querySelector(`#deleteTaskModal${taskObj.title.replaceAll(" ", "")}${taskNumber}`);
     const deleteConfirmBtn = deleteModal.querySelector("#deleteConfirmBtn");
 
     //checkbox eventListener
