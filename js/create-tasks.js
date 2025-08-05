@@ -18,11 +18,10 @@ const addNewTaskForm = document.getElementById("addNewTaskForm");
 const titleInput = document.getElementById("titleInput");
 const obsInput = document.getElementById("obsInput");
 const priorityInput = document.getElementById("priorityInput");
-const modalCancelBtn = document.getElementById("modalCancelBtn");
+const addCancelBtn = document.getElementById("addCancelBtn");
 const addDuplicityToastEl = document.getElementById("addDuplicityToast");
-const editDuplicityToastEl = document.getElementById("editDuplicityToast");
 
-//DOMLoad
+//DOM LOAD ---------------------------------------------------
 initialLoad();
 
 //EVENT LISTENERS ---------------------------------------------------
@@ -60,8 +59,8 @@ addNewTaskForm.addEventListener("submit", (event) => {
     addNewTaskForm.classList.add("was-validated");
 });
 
-//for modal "Cancel" btn
-modalCancelBtn.addEventListener("click", () => clearForm());
+//for modal "Add New Task" Cancel btn
+addCancelBtn.addEventListener("click", () => clearForm(addNewTaskForm, titleInput, obsInput, priorityInput));
 
 //FUNCTIONS ---------------------------------------------------
 //for the initial tasks load from LS
@@ -73,10 +72,12 @@ function initialLoad() {
 }
 
 //for clearing the form
-function clearForm() {
+function clearForm(form, titleInput, obsInput, priorityInput) {
     titleInput.value = "";
     obsInput.value = "";
     priorityInput.value = "low";
+    form.classList.remove("was-validated");
+    form.classList.add("needs-validation");
 }
 
 //for moving tasks
@@ -256,10 +257,17 @@ function createTask(taskObj) {
                                                 </select>
                                             </div>
                                             <div class="modal-btns d-flex justify-content-end p-0 gap-2 mt-4">
-                                                <button type="button" id="modalCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" id="editCancelBtn" class="modal-btn btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                                 <button type="submit" id="modalCreateBtn" class="modal-btn btn btn-warning">Edit</button>
                                             </div>
                                         </form>
+                                    </div>
+                                </div>
+                                <!--duplicity toast-->
+                                <div class="toast-container w-100">
+                                    <div id="editDuplicityToast" class="toast text-bg-danger w-100">
+                                        <div class="toast-header fw-bold text-bg-danger text-uppercase">Duplicated Task</div>
+                                        <div class="toast-body">A Task with the same Title already exists! Please choose another Title.</div>
                                     </div>
                                 </div>
                             </div>
@@ -279,6 +287,8 @@ function createTask(taskObj) {
     const editTitleInput = taskEl.querySelector("#editTitleInput");
     const editObsInput = taskEl.querySelector("#editObsInput");
     const editPriorityInput = taskEl.querySelector("#editPriorityInput");
+    const editDuplicityToastEl = taskEl.querySelector("#editDuplicityToast");
+    const editCancelBtn = taskEl.querySelector("#editCancelBtn");
 
     const deleteModal = taskEl.querySelector(`#deleteTaskModal${taskObj.title}`);
     const modalDeleteBtn = deleteModal.querySelector("#modalDeleteBtn");
@@ -301,6 +311,15 @@ function createTask(taskObj) {
         updateTasksLS();
     });
 
+    //for modal "Edit Task" Cancel btn
+    editCancelBtn.addEventListener("click", () => {
+        editTitleInput.value = taskObj.title;
+        editObsInput.value = taskObj.obs;
+        editPriorityInput.value = taskObj.priority;
+        editTaskForm.classList.remove("was-validated");
+        editTaskForm.classList.add("needs-validation");
+    });
+
     //editTaskForm eventListener
     editTaskForm.addEventListener("submit", (event) => {
         if (!editTaskForm.checkValidity()) {
@@ -315,6 +334,8 @@ function createTask(taskObj) {
             LSCompTasks.forEach((compTask) => {
                 if (compTask.title === editTitleInput.value) duplicatedTask = true;
             });
+
+            if (taskObj.title === editTitleInput.value) duplicatedTask = false;
 
             if (duplicatedTask == true) {
                 event.preventDefault();
