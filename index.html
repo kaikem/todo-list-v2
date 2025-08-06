@@ -70,7 +70,7 @@
                         <!--task title-->
                         <form id="addNewTaskForm" class="needs-validation" novalidate>
                             <div class="new-task-input form-floating">
-                                <input type="text" id="titleInput" class="form-control" placeholder="Task Title" required />
+                                <input type="text" id="titleInput" class="form-control" placeholder="Task Title" autocomplete="off" required />
                                 <label for="titleInput">Task Title</label>
                                 <div class="invalid-feedback">The Task Needs a Title</div>
                             </div>
@@ -84,7 +84,7 @@
                                 <label for="priorityInput" class="form-label mt-3">Select the Task Priority:</label>
                                 <select id="priorityInput" class="form-select" required>
                                     <option value="low">Low</option>
-                                    <option value="normal">Normal</option>
+                                    <option value="normal" selected>Normal</option>
                                     <option value="high">High</option>
                                 </select>
                             </div>

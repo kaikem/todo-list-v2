@@ -111,16 +111,14 @@ function changeIncompHeading() {
 }
 
 //for changing styles with task status (checkbox EL + createTask FU)
-function changeStyleTo(taskEl, taskStatus, taskBtnsCont, editBtn) {
+function changeStyleTo(taskEl, taskStatus, editBtn) {
     if (taskStatus === "incomplete") {
         taskEl.classList.add("incomplete");
         taskEl.classList.remove("complete");
-        taskBtnsCont.classList.remove("complete");
         editBtn.classList.remove("d-none");
     } else if (taskStatus === "complete") {
         taskEl.classList.remove("incomplete");
         taskEl.classList.add("complete");
-        taskBtnsCont.classList.add("complete");
         editBtn.classList.add("d-none");
     }
 }
@@ -228,7 +226,7 @@ function createTask(taskObj) {
                             >
                                 <i class="fa-solid fa-circle-info"></i>
                             </button>
-                            <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-warning px-2 py-1" title="Edit this Task" data-bs-toggle="modal" data-bs-target="#editTaskModal${taskObj.title.replaceAll(
+                            <button id="editBtn" class="task-btn btn btn-lg bg-transparent text-body-secondary px-2 py-1" title="Edit this Task" data-bs-toggle="modal" data-bs-target="#editTaskModal${taskObj.title.replaceAll(
                                 " ",
                                 ""
                             )}${taskNumber}"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -306,7 +304,6 @@ function createTask(taskObj) {
     //inner elements
     const taskTitleEl = taskEl.querySelector(".task-title");
     const taskObsEl = taskEl.querySelector(".popover-btn");
-    const taskBtnsCont = taskEl.querySelector("#taskBtnsCont");
 
     const checkbox = taskEl.querySelector("input[type='checkbox']");
 
@@ -329,7 +326,7 @@ function createTask(taskObj) {
             taskObj.status = "complete";
         }
 
-        changeStyleTo(taskEl, taskObj.status, taskBtnsCont, editBtn);
+        changeStyleTo(taskEl, taskObj.status, editBtn);
         moveTask();
     });
 
@@ -379,7 +376,7 @@ function createTask(taskObj) {
 
     taskObj.status === "complete" ? compTasksRow.appendChild(taskEl) : incompTasksRow.appendChild(taskEl);
 
-    changeStyleTo(taskEl, taskObj.status, taskBtnsCont, editBtn);
+    changeStyleTo(taskEl, taskObj.status, editBtn);
 
     createPopovers();
 }
